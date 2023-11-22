@@ -57,7 +57,7 @@ console.log(router);
       <div>history current : {{ historyCurrent }}</div>
     </div>
 
-    <VueJsonPretty class="view-item dark" :data="$history as any" :deep="2" showLineNumber showLength> </VueJsonPretty>
+    <VueJsonPretty class="view-item dark" :data="$history" :deep="2" showLineNumber showLength> </VueJsonPretty>
   </div>
 
   <main>

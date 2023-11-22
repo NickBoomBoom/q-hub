@@ -1,2 +1,2 @@
-const sharedConfig = require('../../shared/.prettierrc.js');
+const sharedConfig = require('../../shared/.prettierrc.cjs');
 module.exports = sharedConfig;
