@@ -1,8 +1,8 @@
 {
   "name": "q-hub",
-  "version": "1.0.0",
-  "description": "",
-  "private": "true",
+  "version": "0.0.1",
+  "description": "十年经验汇集一身",
+  "private": "false",
   "scripts": {
     "reinstall": "pnpm clear:modules && pnpm i",
     "dev:vue3-history": "pnpm -C ./packages/vue3-history dev",
