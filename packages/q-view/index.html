@@ -23,9 +23,9 @@
 <body>
   <q-doc-view title="q-code-area">
     <q-attr-table>
-      value; string; 内容
-      readOnly; boolean; 是否可读
-      language; string; 初始语言
+      value; string; undefined ;内容
+      readOnly; boolean; false ; 是否可读
+      language; string; javascript ; 初始语言
     </q-attr-table>
 
     <q-attr-table type="event">
@@ -55,8 +55,10 @@
     </script>
   </q-doc-view>
 
-
   <q-doc-view title="q-dialog">
+    <q-attr-table>
+      mask-close;boolean;false;设置为 true, 点击 mask 可关闭
+    </q-attr-table>
     <q-attr-table type="event">
       confirm; null; 确认事件
       close; null; 取消事件
@@ -67,10 +69,14 @@
       footer;底部内容
     </q-attr-table>
     <div class="example">
+      <br>
 
       <button id="dialog-button">
         默认样式
       </button>
+
+      <br>
+      <br>
 
       <button id="dialog-button2">自定义内容</button>
 
@@ -102,6 +108,19 @@
           $('#dialog2')[0].open()
         })
       </script>
+    </div>
+  </q-doc-view>
+
+  <q-doc-view title="q-media-player">
+    <q-attr-table>
+      src;string;undefined;媒体文件url
+    </q-attr-table>
+
+    <div class="example">
+      <q-media-player id="player" src="https://media.w3.org/2010/05/sintel/trailer.mp4"></q-media-player>
+      <br>
+      <q-media-player src="http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3"></q-media-player>
+
     </div>
   </q-doc-view>
 

@@ -35,6 +35,7 @@ export default class AttrTable extends QuarkElement {
       <>
         <th>attr</th>
         <th>type</th>
+        <th>default</th>
         <th>desc</th>
       </>
     );
