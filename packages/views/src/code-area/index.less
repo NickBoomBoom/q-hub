@@ -1,0 +1,67 @@
+
+
+:host {
+  position: relative;
+
+  .code-area {
+    width: 100%;
+    display: block;
+    background-color: white;
+    border: 1px solid #e8e8eb;
+    min-height: 100px;
+    &:focus-within,
+    &:hover {
+      select {
+        display: block;
+      }
+    }
+  
+    &[readOnly="true"] {
+      select {
+        display: block;
+      }
+    }
+  
+    .cm-editor {
+      &.cm-focused {
+        outline: none;
+      }
+  
+      font-family: Menlo,
+      Monaco,
+      Consolas,
+      "Andale Mono",
+      "lucida console",
+      "Courier New",
+      monospace;
+      font-size: 16px;
+    }
+  
+  
+  }
+  select {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    border: 1px solid #e5e5e5;
+    padding: 2px;
+    border-radius: 0;
+    outline: none;
+    font-weight: bold;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+}

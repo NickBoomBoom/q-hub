@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello Quark</title>
+  <script type="module" src="./src/index.tsx"></script>
+  <script crossorigin="anonymous" integrity="sha384-KcyRSlC9FQog/lJsT+QA8AUIFBgnwKM7bxm7/YaX+NTr4D00npYawrX0h+oXI3a2"
+    src="https://lib.baomitu.com/jquery/1.12.4/jquery.js"></script>
+  <style>
+    .box {
+      border: 1px solid;
+      padding: 5px 10px;
+    }
+
+    .box .title {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <q-doc-view title="q-code-area">
+    <q-attr-table>
+      value; string; 内容
+      readOnly; boolean; 是否可读
+      language; string; 初始语言
+    </q-attr-table>
+
+    <q-event-table>
+      change; {value:string,language: string}; 变化
+
+    </q-event-table>
+
+    <div class="example">
+      <q-code-area id="ca" value="为跨技术栈而生！"></q-code-area>
+      <pre> </pre>
+      <q-code-area id="ca" value="为跨技术栈而生！" language="sql" readOnly></q-code-area>
+      <pre>
+      </pre>
+    </div>
+
+    <script>
+      $('#ca').on('change', e => {
+        $('#ca').next().html(JSON.stringify(e.detail, null, 2))
+      })
+    </script>
+  </q-doc-view>
+
+
+  <p>Edit <code>src/index.tsx</code> and save to test HMR</p>
+  <p><a href="/index.vue.html">在 Vue.js 中调试（Debugging in Vue.js）</a></p>
+
+
+</body>
+
+</html>
