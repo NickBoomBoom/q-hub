@@ -1,0 +1,1 @@
+find . -name "dist" -type d -exec rm -rf '{}' +

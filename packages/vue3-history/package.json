@@ -1,0 +1,40 @@
+{
+  "name": "vue3-history",
+  "version": "0.0.18",
+  "private": false,
+  "scripts": {
+    "dev": "vite",
+    "build": "rm -rf dist && vite build",
+    "push": "pnpm run build && pnpm publish --no-git-checks",
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.{js,vue,json}\""
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.4.8",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "@vue/eslint-config-typescript": "^11.0.3",
+    "@vue/runtime-core": "^3.3.4",
+    "@vue/tsconfig": "^0.4.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "sass": "^1.64.2",
+    "typescript": "~5.1.6",
+    "vite": "^4.4.9",
+    "vite-plugin-dts": "^3.5.1",
+    "vue": "^3.3.4",
+    "vue-json-pretty": "^2.2.4",
+    "vue-router": "^4.2.4",
+    "vue-tsc": "^1.8.8"
+  },
+  "keywords": [
+    "vue3",
+    "history"
+  ]
+}

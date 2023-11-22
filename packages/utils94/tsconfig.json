@@ -1,0 +1,19 @@
+// 配置详解: https://www.tslang.cn/docs/handbook/compiler-options.html
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext","DOM"],
+    "allowJs": true, // 是否允许编译js文件,默认false
+    "checkJs": true, // 是否检查和报告js文件中的错误,默认false
+    "declaration": true,
+    "typeRoots": ["./node_modules/@types"],
+    "diagnostics": true,
+    "extendedDiagnostics": true,
+    "outDir": "dist",
+    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "strict": true,
+    "allowSyntheticDefaultImports": true, 
+    "moduleResolution":"node"
+  }
+}
