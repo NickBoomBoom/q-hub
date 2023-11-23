@@ -1,10 +1,14 @@
 import { QuarkElement, Ref, createRef, customElement, property, state } from 'quarkc';
 import style from './index.less?inline';
+import Dialog from '../dialog';
 
 @customElement({ tag: 'q-image-resize', style })
 export default class ImageResize extends QuarkElement {
   @state()
   isControl = false;
+
+  @state()
+  isCropper = true;
 
   @property({
     type: Number,
@@ -17,8 +21,11 @@ export default class ImageResize extends QuarkElement {
   @property({ type: Boolean })
   readOnly = false;
 
-  el: Ref<HTMLElement> = createRef();
-  dialog: Ref<any> = createRef();
+  elRef: Ref<HTMLElement> = createRef();
+  dialogRef: Ref<Dialog> = createRef();
+  imgRef: Ref<HTMLImageElement> = createRef();
+  cropperRef: Ref<HTMLElement> = createRef();
+  contentRef: Ref<HTMLElement> = createRef();
   isMoving = false;
   preWidth = null;
   startX = null;
@@ -67,9 +74,9 @@ export default class ImageResize extends QuarkElement {
   };
 
   handleClick = () => {
-    const classList = this.el.current.classList;
+    const classList = this.elRef.current.classList;
     if (classList.contains('focus') || classList.contains('readOnly')) {
-      !this.isMoving && this.dialog.current.open();
+      !this.isMoving && this.dialogRef.current.open();
     } else {
       this.toggleControl();
     }
@@ -97,21 +104,60 @@ export default class ImageResize extends QuarkElement {
   getClassName = () => {
     return `q-image-resize ${this.readOnly ? 'readOnly' : ''}  ${this.isControl ? 'focus' : ''}`;
   };
+
+  openCropper = (e) => {
+    e.stopPropagation();
+    const s = window.getComputedStyle(this.cropperRef.current);
+    const x = this.cropperRef.current.offsetLeft;
+    const y = this.cropperRef.current.offsetTop;
+    const width = parseFloat(s.width);
+    const height = parseFloat(s.height);
+    const box = this.getBoundingClientRect();
+    console.log(333, x, y, width, height, box);
+    this.contentRef.current.style.cssText = `
+      width: ${width}px;
+      height: ${height}px;
+    `;
+    this.imgRef.current.style.cssText = `
+      transform-origin: left top;
+      transform: scale(${box.width / width} ) translate(-${x}px,-${y}px);
+    `;
+  };
   render() {
     return (
       <>
-        <div ref={this.el} class={this.getClassName()} onClick={this.handleClick}>
-          <div class="content" style={{ width: this.currentWidth }}>
-            <img src={this.src} />
+        <div ref={this.elRef} class={this.getClassName()} onClick={this.handleClick}>
+          <div ref={this.contentRef} class="content" style={{ width: this.currentWidth }}>
+            <img ref={this.imgRef} src={this.src} />
           </div>
-          <div class="anchors" style={{ visibility: this.isControl ? 'visible' : 'hidden' }}>
-            <div class="anchor lt" data-type="-" onMouseDown={this.listen}></div>
-            <div class="anchor lb" data-type="-" onMouseDown={this.listen}></div>
-            <div class="anchor rt" data-type="+" onMouseDown={this.listen}></div>
-            <div class="anchor rb" data-type="+" onMouseDown={this.listen}></div>
-          </div>
+          {this.isControl && (
+            <div class="anchors">
+              <div class="anchor lt" data-type="-" onMouseDown={this.listen}></div>
+              <div class="anchor lb" data-type="-" onMouseDown={this.listen}></div>
+              <div class="anchor rt" data-type="+" onMouseDown={this.listen}></div>
+              <div class="anchor rb" data-type="+" onMouseDown={this.listen}></div>
+            </div>
+          )}
+          {this.isCropper && (
+            <div class="croppers" ref={this.cropperRef}>
+              <div class="cropper lt" data-type="-" onMouseDown={this.listen}></div>
+              <div class="cropper ct" data-type="-" onMouseDown={this.listen}></div>
+              <div class="cropper rt" data-type="+" onMouseDown={this.listen}></div>
+
+              <div class="cropper lb" data-type="-" onMouseDown={this.listen}></div>
+              <div class="cropper cb" data-type="-" onMouseDown={this.listen}></div>
+              <div class="cropper rb" data-type="+" onMouseDown={this.listen}></div>
+            </div>
+          )}
+
+          {this.isControl && (
+            <div className="toolbar" onClick={this.openCropper}>
+              <button>裁切</button>
+            </div>
+          )}
         </div>
-        <q-dialog ref={this.dialog}>
+
+        <q-dialog ref={this.dialogRef}>
           <img src={this.src} width="100%" />
           <div slot="footer"></div>
         </q-dialog>

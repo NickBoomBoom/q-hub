@@ -2,7 +2,7 @@ import { QuarkElement, customElement, property, state } from 'quarkc';
 import style from './index.less?inline';
 
 @customElement({ tag: 'q-dialog', style })
-export default class EventTable extends QuarkElement {
+export default class Dialog extends QuarkElement {
   @state()
   className = 'q-dialog hide';
   @property({ type: Boolean, attribute: 'mask-close' })
