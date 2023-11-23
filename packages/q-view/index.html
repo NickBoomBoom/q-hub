@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -28,9 +28,7 @@
       language; string; javascript ; 初始语言
     </q-attr-table>
 
-    <q-attr-table type="event">
-      change; {value:string,language: string}; 变化
-    </q-attr-table>
+    <q-attr-table type="event"> change; {value:string,language: string}; 变化 </q-attr-table>
 
     <q-attr-table type="method">
       setValue;(v:string):void;设置内容
@@ -40,18 +38,17 @@
 
     <div class="example">
       <q-code-area id="ca" value="console.log('可编辑状态')"></q-code-area>
-      <pre> </pre>
+      <pre></pre>
       <q-code-area id="ca2" value="console.log('只读状态')" language="sql" readOnly></q-code-area>
       <pre></pre>
     </div>
 
     <script>
-      [$('#ca'), $('#ca2')].forEach(t => {
-        t.on('change', e => {
-          t.next().html(JSON.stringify(e.detail, null, 2))
-        })
-      })
-
+      [$('#ca'), $('#ca2')].forEach((t) => {
+        t.on('change', (e) => {
+          t.next().html(JSON.stringify(e.detail, null, 2));
+        });
+      });
     </script>
   </q-doc-view>
 
@@ -63,71 +60,63 @@
       confirm; null; 确认事件
       close; null; 取消事件
     </q-attr-table>
-
-    <q-attr-table type="slot">
-      default;默认内容
-      footer;底部内容
-    </q-attr-table>
+    <q-attr-table type="slot"> default;默认内容 footer;底部内容 </q-attr-table>
     <div class="example">
-      <br>
-
-      <button id="dialog-button">
-        默认样式
-      </button>
-
-      <br>
-      <br>
-
+      <br />
+      <button id="dialog-button">默认样式</button>
+      <br />
+      <br />
       <button id="dialog-button2">自定义内容</button>
 
-      <q-dialog id="dialog">
-        我是内容
-        我是内容
-        我是内容
-        我是内容
-        我是内容
-      </q-dialog>
+      <q-dialog id="dialog"> 我是内容 我是内容 我是内容 我是内容 我是内容 </q-dialog>
 
       <q-dialog id="dialog2">
-        我是内容
-        我是内容
-        我是内容
-        我是内容
-        我是内容
-        <div slot="footer" style="background-color: skyblue;">
-          我是尾巴
-        </div>
+        我是内容 我是内容 我是内容 我是内容 我是内容
+        <div slot="footer" style="background-color: skyblue">我是尾巴</div>
       </q-dialog>
 
       <script>
         $('#dialog-button').on('click', () => {
-          $('#dialog')[0].open()
-        })
+          $('#dialog')[0].open();
+        });
 
         $('#dialog-button2').on('click', () => {
-          $('#dialog2')[0].open()
-        })
+          $('#dialog2')[0].open();
+        });
       </script>
     </div>
   </q-doc-view>
 
   <q-doc-view title="q-media-player">
-    <q-attr-table>
-      src;string;undefined;媒体文件url
-    </q-attr-table>
+    <q-attr-table> src;string;undefined;媒体文件url </q-attr-table>
 
     <div class="example">
       <q-media-player id="player" src="https://media.w3.org/2010/05/sintel/trailer.mp4"></q-media-player>
-      <br>
+      <br />
       <q-media-player src="http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3"></q-media-player>
-
     </div>
   </q-doc-view>
 
+  <q-doc-view title="q-image-resize">
+    <q-attr-table>
+      src;string;null;图片地址
+      readOnly;boolean;false;是否只读
+    </q-attr-table>
+
+    <div class="example">
+      <div style="width: 500px">
+        <h3>可控模式</h3>
+        <q-image-resize src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg"> </q-image-resize>
+      </div>
+
+      <div style="width: 500px">
+        <h3>只读模式</h3>
+        <q-image-resize readOnly src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg"> </q-image-resize>
+      </div>
+    </div>
+  </q-doc-view>
 
   <p><a href="/index.vue.html">在 Vue.js 中调试（Debugging in Vue.js）</a></p>
-
-
 </body>
 
 </html>

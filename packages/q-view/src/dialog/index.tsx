@@ -16,7 +16,6 @@ export default class EventTable extends QuarkElement {
   };
   close = () => {
     this.className = 'q-dialog hide';
-    console.log(3333, this);
     this.offListen();
     this.emitClose();
   };

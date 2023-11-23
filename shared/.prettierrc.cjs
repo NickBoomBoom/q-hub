@@ -31,7 +31,7 @@ module.exports = {
   // 使用默认的折行标准 always\never\preserve
   proseWrap: 'preserve',
   // 指定HTML文件的全局空格敏感度 css\strict\ignore
-  htmlWhitespaceSensitivity: 'css',
+  htmlWhitespaceSensitivity: 'strict',
   // Vue文件脚本和样式标签缩进
   // vueIndentScriptAndStyle: false,
   // 换行符使用 lf 结尾是 可选值"<auto|lf|crlf|cr>"
