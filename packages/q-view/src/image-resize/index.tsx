@@ -13,7 +13,32 @@ export default class ImageResize extends QuarkElement {
   @property({
     type: Number,
   })
-  width = null;
+  width = 0;
+
+  @property({
+    type: Number,
+  })
+  height = 0;
+
+  @property({
+    type: Number,
+  })
+  x = 0;
+
+  @property({
+    type: Number,
+  })
+  y = 0;
+
+  @property({
+    type: Number,
+  })
+  rotate = 0;
+
+  @property({
+    type: Number,
+  })
+  scale = 0;
 
   @property({ type: String })
   src = '';
@@ -24,23 +49,44 @@ export default class ImageResize extends QuarkElement {
   elRef: Ref<HTMLElement> = createRef();
   dialogRef: Ref<Dialog> = createRef();
   imgRef: Ref<HTMLImageElement> = createRef();
-  cropperRef: Ref<HTMLElement> = createRef();
   contentRef: Ref<HTMLElement> = createRef();
+
+  // 缩放变量
   isMoving = false;
   preWidth = null;
   startX = null;
-  startY = null;
   startEl = null;
 
-  get currentWidth() {
-    return this.width ? this.width + 'px' : '100%';
+  get contentStyle() {
+    return {
+      width: this.width ? this.width + 'px' : '100%',
+      height: this.height ? this.height + 'px' : 'auto',
+    };
+  }
+
+  get imgStyle() {
+    return {
+      transform: `rotate(${this.rotate || 0}) translate(-${this.x}px, -${this.y}px) scale(${this.scale || 0})`,
+    };
+  }
+
+  get data() {
+    return {
+      width: this.width,
+      height: this.height,
+      x: this.x,
+      y: this.y,
+      rotate: this.rotate,
+      scale: this.scale,
+      src: this.src,
+      readOnly: this.readOnly,
+    };
   }
 
   listen = (e) => {
     this.isMoving = true;
     this.startEl = e.target;
     this.startX = e.clientX;
-    this.startY = e.clientY;
     this.preWidth = this.width || this.getBoundingClientRect().width;
     this.setCursor(window.getComputedStyle(this.startEl).cursor);
     document.addEventListener('mousemove', this.handleMouseMove, false);
@@ -68,9 +114,11 @@ export default class ImageResize extends QuarkElement {
   };
 
   setCursor = (v: string) => {
-    [document.body, this.startEl].forEach((el) => {
-      el.style.cursor = v;
-    });
+    [document.body, this.startEl]
+      .filter((t) => !!t)
+      .forEach((el) => {
+        el.style.cursor = v;
+      });
   };
 
   handleClick = () => {
@@ -102,32 +150,18 @@ export default class ImageResize extends QuarkElement {
   };
 
   getClassName = () => {
-    return `q-image-resize ${this.readOnly ? 'readOnly' : ''}  ${this.isControl ? 'focus' : ''}`;
+    return `q-image-resize ${this.readOnly ? 'readOnly' : ''} ${this.isControl ? 'focus' : ''} ${this.isCropper ? 'cropper' : ''}`;
   };
 
   openCropper = (e) => {
     e.stopPropagation();
-    const s = window.getComputedStyle(this.cropperRef.current);
-    const x = this.cropperRef.current.offsetLeft;
-    const y = this.cropperRef.current.offsetTop;
-    const width = parseFloat(s.width);
-    const height = parseFloat(s.height);
-    const box = this.getBoundingClientRect();
-    console.log(333, x, y, width, height, box);
-    this.contentRef.current.style.cssText = `
-      width: ${width}px;
-      height: ${height}px;
-    `;
-    this.imgRef.current.style.cssText = `
-      transform-origin: left top;
-      transform: scale(${box.width / width} ) translate(-${x}px,-${y}px);
-    `;
   };
+
   render() {
     return (
       <>
         <div ref={this.elRef} class={this.getClassName()} onClick={this.handleClick}>
-          <div ref={this.contentRef} class="content" style={{ width: this.currentWidth }}>
+          <div ref={this.contentRef} class="content" style={this.contentStyle}>
             <img ref={this.imgRef} src={this.src} />
           </div>
           {this.isControl && (
@@ -136,17 +170,6 @@ export default class ImageResize extends QuarkElement {
               <div class="anchor lb" data-type="-" onMouseDown={this.listen}></div>
               <div class="anchor rt" data-type="+" onMouseDown={this.listen}></div>
               <div class="anchor rb" data-type="+" onMouseDown={this.listen}></div>
-            </div>
-          )}
-          {this.isCropper && (
-            <div class="croppers" ref={this.cropperRef}>
-              <div class="cropper lt" data-type="-" onMouseDown={this.listen}></div>
-              <div class="cropper ct" data-type="-" onMouseDown={this.listen}></div>
-              <div class="cropper rt" data-type="+" onMouseDown={this.listen}></div>
-
-              <div class="cropper lb" data-type="-" onMouseDown={this.listen}></div>
-              <div class="cropper cb" data-type="-" onMouseDown={this.listen}></div>
-              <div class="cropper rb" data-type="+" onMouseDown={this.listen}></div>
             </div>
           )}
 

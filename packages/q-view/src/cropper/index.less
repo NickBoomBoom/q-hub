@@ -1,0 +1,178 @@
+:host {
+  display: block;
+  transform: translate3d(0, 0, 0);
+  .content {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .croppers {
+    border: 1px dashed grey;
+    position: absolute;
+    overflow: hidden;
+
+    cursor: move;
+    background-color: transparent;
+    .cropper {
+      display: block;
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      z-index: 1;
+      &.lt {
+        left: 0;
+        top: 0;
+        cursor: nwse-resize;
+        &::before {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+        }
+
+        &::after {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          transform-origin: left top;
+          transform: rotate(90deg) translateY(-100%);
+        }
+      }
+      &.ct {
+        left: 50%;
+        top: 0;
+        transform: translate(-50%);
+        cursor: row-resize;
+
+        &::before {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+        }
+      }
+      &.rt {
+        right: 0;
+        top: 0;
+        cursor: nesw-resize;
+
+        &::before {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+        }
+
+        &::after {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          transform-origin: right top;
+          transform: rotate(-90deg) translateY(-100%);
+        }
+      }
+      &.lb {
+        bottom: 0;
+        left: 0;
+        cursor: nesw-resize;
+
+        &::before {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+        }
+
+        &::after {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          transform-origin: left bottom;
+          transform: rotate(-90deg) translateY(100%);
+        }
+      }
+      &.cb {
+        left: 50%;
+        bottom: 0;
+        cursor: row-resize;
+
+        transform: translate(-50%);
+        &::before {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+        }
+      }
+      &.rb {
+        right: 0;
+        bottom: 0;
+        cursor: nwse-resize;
+        &::before {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+        }
+
+        &::after {
+          content: '';
+          display: block;
+          height: 4px;
+          background-color: white;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 100%;
+          transform-origin: right bottom;
+          transform: rotate(90deg) translateY(100%);
+        }
+      }
+    }
+
+    .preview {
+      display: block;
+      user-select: none;
+      pointer-events: none;
+    }
+  }
+}
