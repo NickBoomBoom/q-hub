@@ -23,8 +23,9 @@ jobs:
           git config --global user.name "NickBoomBoom"
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
           npm i -g pnpm 
-          pnpm install
+          pnpm i
           cd packages/q-view
+          pnpm i
           pnpm version patch
           pnpm run publish
           new_version=$(jq -r .version package.json)
