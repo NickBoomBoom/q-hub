@@ -11,7 +11,8 @@
     "clear:dist": "./shell/clearDist.sh",
     "publish:utils94": "pnpm -C ./packages/utils94 push",
     "publish:vue3-history": "pnpm -C ./packages/vue3-history push",
-    "publish:q-view": "pnpm -C ./packages/q-view push"
+    "publish:q-view": "pnpm -C ./packages/q-view push",
+    "build:q-view": "pnpm -C ./packages/q-view build:web"
   },
   "keywords": [],
   "author": "",
