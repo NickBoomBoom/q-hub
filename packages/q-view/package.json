@@ -1,6 +1,6 @@
 {
   "name": "q-view",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "dev": "pnpm run start",
     "start": "vite --open",
