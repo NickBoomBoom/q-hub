@@ -1,0 +1,33 @@
+name: Publish to npm
+
+on: workflow_dispatch
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Build
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSENAL_TOKEN }}
+        run: |
+          git config --global user.email "q7but@qq.com"
+          git config --global user.name "NickBoomBoom"
+          npm i -g pnpm 
+          pnpm install
+          cd packages/q-view
+          pnpm version patch
+          new_version=$(jq -r .version package.json)
+          git add .
+          git commit -m "q-view new version: $new_version"
+          git push
+          pnpm run publish
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
