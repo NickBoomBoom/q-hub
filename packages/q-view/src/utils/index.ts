@@ -38,12 +38,11 @@ export function getImgInfoByDom(
 }> {
   return new Promise((resolve, reject) => {
     const { width } = el.getBoundingClientRect();
-    console.log(3333, width);
     const newEl = document.createElement('div');
     const img = new Image();
     img.src = src;
     img.width = width;
-    img.onload = (e) => {
+    img.onload = (e: any) => {
       resolve({
         width: e.target.width,
         height: e.target.height,
@@ -51,7 +50,6 @@ export function getImgInfoByDom(
       newEl.remove();
     };
     img.onerror = (e) => {
-      console.error(111, e);
       reject(e);
     };
     newEl.appendChild(img);
