@@ -20,8 +20,8 @@ interface RECT {
   cropperHeight: number;
 }
 
-@customElement({ tag: 'q-cropper', style })
-export default class Cropper extends QuarkElement {
+@customElement({ tag: 'q-image-cropper', style })
+export default class ImageCropper extends QuarkElement {
   MIN_WIDTH = 30;
   MIN_HEIGHT = 30;
 

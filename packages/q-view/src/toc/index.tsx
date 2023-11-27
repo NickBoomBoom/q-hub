@@ -23,6 +23,10 @@ export default class Toc extends QuarkElement {
             </div>
           );
         })}
+
+        <footer>
+          <slot name="footer"></slot>
+        </footer>
       </>
     );
   }

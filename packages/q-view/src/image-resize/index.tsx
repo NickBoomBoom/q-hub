@@ -189,6 +189,9 @@ export default class ImageResize extends QuarkElement {
     }
   };
 
+  stopToolbar = (e) => {
+    e.stopPropagation();
+  };
   getClassName = () => {
     return `q-image-resize ${this.readOnly ? 'readOnly' : ''} ${this.isControl ? 'focus' : ''} ${this.isCropper ? 'cropper' : ''}`;
   };
@@ -210,7 +213,7 @@ export default class ImageResize extends QuarkElement {
           )}
 
           {this.isControl && (
-            <div className="toolbar">
+            <div className="toolbar" onClick={this.stopToolbar}>
               <slot name="toolbar"></slot>
             </div>
           )}

@@ -119,7 +119,7 @@
       </q-tab>
     </q-tabs>
   </q-doc-view>
-  <q-doc-view title="q-cropper(暂未适配移动端)">
+  <q-doc-view title="q-image-cropper(暂未适配移动端)">
     <q-tabs slot="attr">
       <q-tab title="属性">
         <q-attr-table>
@@ -132,15 +132,15 @@
     <q-tabs>
       <q-tab title="裁切模式">
         <q-html-code>
-          <q-cropper style="width:500px" src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
-          </q-cropper>
+          <q-image-cropper style="width:500px" src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+          </q-image-cropper>
         </q-html-code>
       </q-tab>
       <q-tab title="配置初始位置">
         <q-html-code>
-          <q-cropper matrix="1,0,0,1,10,20" rect="300,200,300,100" style="width:500px"
+          <q-image-cropper matrix="1,0,0,1,10,20" rect="300,200,300,100" style="width:500px"
             src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
-          </q-cropper>
+          </q-image-cropper>
         </q-html-code>
       </q-tab>
     </q-tabs>
@@ -182,11 +182,26 @@
           </q-image-resize>
         </q-html-code>
       </q-tab>
+      <q-tab title="toolbar 插槽">
+        <q-html-code>
+          <q-image-resize style="width: 500px" src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+            <div slot="toolbar">
+              <button id="toolbar">功能</button>
+            </div>
+            <script>
+              $('#toolbar').on("click", e => {
+                alert('toolbar 点击')
+              })
+            </script>
+          </q-image-resize>
+        </q-html-code>
+      </q-tab>
+
     </q-tabs>
   </q-doc-view>
-
-  <q-toc />
-  <p><a href="/index.vue.html">在 Vue.js 中调试（Debugging in Vue.js）</a></p>
+  <q-toc>
+    <div slot="footer"><a href="/index.vue.html">在 Vue.js 中调试</a></div>
+  </q-toc>
 </body>
 
 </html>

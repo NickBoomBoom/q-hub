@@ -4,7 +4,7 @@ export * from './doc-view';
 export * from './dialog';
 export * from './media-player';
 export * from './image-resize';
-export * from './cropper';
+export * from './image-cropper';
 export * from './tabs';
 export * from './tab';
 export * from './html-code';
