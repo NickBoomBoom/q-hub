@@ -5,7 +5,7 @@
     "dev": "pnpm run start",
     "start": "vite --open",
     "build": "vite build --config vite.config.build.ts && tsc",
-    "prepublishOnly": "pnpm run build"
+    "build:web": "vite build --config vite.config.web.ts && tsc"
   },
   "type": "module",
   "main": "./dist/index.umd.js",
