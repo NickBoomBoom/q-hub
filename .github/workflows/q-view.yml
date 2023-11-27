@@ -1,4 +1,4 @@
-name: Publish to npm
+name: Publish Q-VIEW
 
 on: workflow_dispatch
 
