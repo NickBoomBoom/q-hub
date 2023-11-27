@@ -55,6 +55,7 @@ export default class CodeArea extends QuarkElement {
     return {
       value: this.value,
       language: this.language,
+      readOnly: this.readOnly,
     };
   }
 

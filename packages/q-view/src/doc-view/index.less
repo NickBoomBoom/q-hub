@@ -2,11 +2,27 @@
   display: block;
   border: 1px solid #e5e5e5;
   border-radius: 5px;
-  padding: 10px;
+  padding-bottom: 20px;
   margin-bottom: 20px;
   .title {
-    font-weight: bold;
-    font-size: 20px;
+    font-weight: 700;
+    font-size: 25px;
+    height: 50px;
+    line-height: 50px;
     margin-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0 20px;
+  }
+  .attr {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 10px 20px;
+    &.hide {
+      height: 0;
+      padding: 0;
+      border: none;
+    }
+  }
+  .main {
+    padding: 10px 20px 0;
   }
 }

@@ -122,9 +122,15 @@ importers:
       '@codemirror/view':
         specifier: ^6.22.0
         version: 6.22.0
+      '@types/prismjs':
+        specifier: ^1.26.3
+        version: 1.26.3
       codemirror:
         specifier: ^6.0.1
         version: 6.0.1(@lezer/common@1.1.1)
+      prismjs:
+        specifier: ^1.29.0
+        version: 1.29.0
       quarkc:
         specifier: ^1.0.40
         version: 1.0.40
@@ -137,7 +143,7 @@ importers:
         version: 2.6.2
       vite:
         specifier: ^5.0.2
-        version: 5.0.2(less@4.2.0)
+        version: 5.0.2(@types/node@20.9.4)(less@4.2.0)
 
   packages/utils94:
     dependencies:
@@ -1260,6 +1266,10 @@ packages:
     dependencies:
       undici-types: 5.26.5
     dev: true
+
+  /@types/prismjs@1.26.3:
+    resolution: {integrity: sha512-A0D0aTXvjlqJ5ZILMz3rNfDBOx9hHxLZYv2by47Sm/pqW35zzjusrZTryatjN/Rf8Us2gZrJD+KeHbUSTux1Cw==}
+    dev: false
 
   /@types/semver@7.5.0:
     resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
@@ -3691,6 +3701,11 @@ packages:
     hasBin: true
     dev: true
 
+  /prismjs@1.29.0:
+    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
+    engines: {node: '>=6'}
+    dev: false
+
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
     requiresBuild: true
@@ -4313,42 +4328,6 @@ packages:
         optional: true
     dependencies:
       '@types/node': 20.9.4
-      esbuild: 0.19.7
-      less: 4.2.0
-      postcss: 8.4.31
-      rollup: 4.5.0
-    optionalDependencies:
-      fsevents: 2.3.3
-    dev: true
-
-  /vite@5.0.2(less@4.2.0):
-    resolution: {integrity: sha512-6CCq1CAJCNM1ya2ZZA7+jS2KgnhbzvxakmlIjN24cF/PXhRMzpM/z8QgsVJA/Dm5fWUWnVEsmtBoMhmerPxT0g==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
       esbuild: 0.19.7
       less: 4.2.0
       postcss: 8.4.31

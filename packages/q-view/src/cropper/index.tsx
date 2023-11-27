@@ -2,57 +2,52 @@ import { QuarkElement, Ref, createRef, customElement, property, state } from 'qu
 import style from './index.less?inline';
 import { getImgInfoByDom, getTransformByMatrix } from '../utils';
 
-const DEFAULT_MATRIX = '1,0,0,1,0,1';
+interface CROPPER_RECT {
+  width: number;
+  height: number;
+  scaleX: number;
+  scaleY: number;
+  skewX: number;
+  skewY: number;
+  translateX: number;
+  translateY: number;
+}
+
+interface RECT {
+  imgWidth: number;
+  imgHeight: number;
+  cropperWidth: number;
+  cropperHeight: number;
+}
+
 @customElement({ tag: 'q-cropper', style })
-export default class AttrTable extends QuarkElement {
-  @property({ type: String })
-  src = null;
-
-  @property({ type: Number })
-  width = 0;
-
-  @property({ type: Number })
-  height = 0;
-
-  @property({ type: Number })
-  x = 0;
-
-  @property({ type: Number })
-  y = 0;
-
-  @property({
-    type: String,
-  })
-  matrix = DEFAULT_MATRIX;
-
+export default class Cropper extends QuarkElement {
   MIN_WIDTH = 30;
   MIN_HEIGHT = 30;
 
-  @state()
-  contentRect: {
-    width: number;
-    height: number;
-  } | null = null;
+  @property({ type: String })
+  src = null;
+
+  @property({ type: String })
+  rect = ''; // 原图宽,裁切宽,原图高,裁切高
+
+  // scaleX(), skewY(), skewX(), scaleY(), translateX(), translateY()  translateX 和 translateY 改为百分比
+  @property({
+    type: String,
+  })
+  matrix = '';
+
   contentRef: Ref<HTMLElement> = createRef();
   previewRef: Ref<HTMLImageElement> = createRef();
   cropperRef: Ref<HTMLElement> = createRef();
+  cropperEl: HTMLElement = null;
   isCutting = false;
-  cropperEl = null;
 
   startX = null;
   startY = null;
 
   // 开始时保存最初始的值
-  curRect: {
-    width: number;
-    height: number;
-    scaleX: number;
-    scaleY: number;
-    skewX: number;
-    skewY: number;
-    translateX: number;
-    translateY: number;
-  } = {
+  curRect: CROPPER_RECT = {
     width: null,
     height: null,
     scaleX: null,
@@ -63,20 +58,39 @@ export default class AttrTable extends QuarkElement {
     translateY: null,
   };
 
+  get data() {
+    return {
+      rect: this.rect,
+      matrix: this.matrix,
+      src: this.src,
+    };
+  }
   get cropperMatrix() {
     return getTransformByMatrix(this.matrix);
   }
+
   get contentStyle() {
     return {
-      width: this.contentRect?.width ?? 'auto',
-      height: this.contentRect?.height ?? 'auto',
+      width: this.computedRect?.imgWidth ?? 'auto',
+      height: this.computedRect?.imgHeight ?? 'auto',
+    };
+  }
+
+  get computedRect(): RECT {
+    const [imgWidth, cropperWidth, imgHeight, cropperHeight] = (this.rect || '').split(',').map((t) => +t);
+    return {
+      imgWidth,
+      cropperWidth,
+      imgHeight,
+      cropperHeight,
     };
   }
 
   get cropperStyle() {
+    const { cropperHeight, cropperWidth } = this.computedRect;
     return {
-      width: this.width,
-      height: this.height,
+      width: cropperWidth,
+      height: cropperHeight,
       transform: `matrix(${this.matrix})`,
     };
   }
@@ -97,13 +111,23 @@ export default class AttrTable extends QuarkElement {
   init = async () => {
     try {
       const info = await getImgInfoByDom(this.src, this);
-      this.contentRect = info;
-      this.width = this.width || info.width * 0.6;
-      this.height = this.height || info.height * 0.4;
+      const { cropperWidth, cropperHeight } = this.computedRect;
+      this.rect = `${info.width},${cropperWidth || info.width * 0.6},${info.height},${cropperHeight || info.height * 0.4}`;
+      this.initMatrix();
     } catch (error) {
       console.error(error);
     }
   };
+
+  initMatrix = () => {
+    if (!this.matrix) {
+      const { imgWidth, imgHeight, cropperHeight, cropperWidth } = this.computedRect;
+      const x = (imgWidth - cropperWidth) / 2;
+      const y = (imgHeight - cropperHeight) / 2;
+      this.matrix = `1,0,0,1,${x},${y}`;
+    }
+  };
+
   listen = (e) => {
     if (this.isCutting) {
       return;
@@ -113,8 +137,8 @@ export default class AttrTable extends QuarkElement {
     this.startX = e.clientX;
     this.startY = e.clientY;
     this.curRect = {
-      width: this.width,
-      height: this.height,
+      width: this.computedRect.cropperWidth,
+      height: this.computedRect.cropperHeight,
       ...this.cropperMatrix,
     };
     this.setCursor(window.getComputedStyle(this.cropperEl).cursor);
@@ -139,8 +163,8 @@ export default class AttrTable extends QuarkElement {
       case 'move':
         {
           const { translateX, translateY, width, height, scaleX, scaleY, skewX, skewY } = this.curRect;
-          const newX = ~~(translateX + deltaX);
-          const newY = ~~(translateY + deltaY);
+          const newX = translateX + deltaX;
+          const newY = translateY + deltaY;
           const res = this.check(newX, newY, width, height);
           this.matrix = `${scaleX},${skewX},${skewY},${scaleY},${res.x},${res.y}`;
         }
@@ -148,55 +172,73 @@ export default class AttrTable extends QuarkElement {
       case 'lt':
         {
           const { translateX, translateY, width, height, scaleX, scaleY, skewX, skewY } = this.curRect;
-          const w = ~~(width - deltaX);
-          const h = ~~(height - deltaY);
-          const newX = ~~(translateX + deltaX);
-          const newY = ~~(translateY + deltaY);
+          const w = width - deltaX;
+          const h = height - deltaY;
+          const newX = translateX + deltaX;
+          const newY = translateY + deltaY;
           const res = this.check(newX, newY, w, h);
-          this.width = res.w;
-          this.height = res.h;
+          const { imgWidth, imgHeight } = this.computedRect;
+          this.rect = `${imgWidth},${res.w},${imgHeight},${res.h}`;
+
           this.matrix = `${scaleX},${skewX},${skewY},${scaleY},${res.x},${res.y}`;
         }
         break;
-
+      case 'lb':
+        {
+          const { translateX, translateY, width, height, scaleX, scaleY, skewX, skewY } = this.curRect;
+          const { imgWidth, imgHeight } = this.computedRect;
+          const w = width - deltaX;
+          const h = height + deltaY;
+          const newX = translateX + deltaX;
+          const res = this.check(newX, translateY, w, h);
+          this.rect = `${imgWidth},${res.w},${imgHeight},${res.h}`;
+          this.matrix = `${scaleX},${skewX},${skewY},${scaleY},${res.x},${res.y}`;
+        }
+        break;
       case 'ct':
         {
           const { translateX, translateY, width, height, scaleX, scaleY, skewX, skewY } = this.curRect;
-          const h = ~~(height - deltaY);
-          const newY = ~~(translateY + deltaY);
-          const res = this.check(translateX, newY, this.width, h);
-          this.height = res.h;
+          const h = height - deltaY;
+          const newY = translateY + deltaY;
+          const { imgWidth, imgHeight, cropperWidth } = this.computedRect;
+          const res = this.check(translateX, newY, cropperWidth, h);
+          this.rect = `${imgWidth},${cropperWidth},${imgHeight},${res.h}`;
           this.matrix = `${scaleX},${skewX},${skewY},${scaleY},${translateX},${res.y}`;
+        }
+        break;
+
+      case 'cb':
+        {
+          const { translateX, translateY, height } = this.curRect;
+          const h = height + deltaY;
+          const { imgWidth, imgHeight, cropperWidth } = this.computedRect;
+          const res = this.check(translateX, translateY, cropperWidth, h);
+          this.rect = `${imgWidth},${cropperWidth},${imgHeight},${res.h}`;
         }
         break;
 
       case 'rt':
         {
           const { translateX, translateY, width, height, scaleX, scaleY, skewX, skewY } = this.curRect;
-          const w = ~~(width + deltaX);
-          const h = ~~(height - deltaY);
-          const newX = ~~-(translateX - deltaX);
-          const newY = ~~(translateY + deltaY);
-          const res = this.check(newX, newY, w, h);
-          this.width = res.w;
-          this.height = res.h;
-          this.matrix = `${scaleX},${skewX},${skewY},${scaleY},${res.x},${res.y}`;
+          const w = width + deltaX;
+          const h = height - deltaY;
+          const newY = translateY + deltaY;
+          const res = this.check(translateX, newY, w, h);
+          const { imgWidth, imgHeight } = this.computedRect;
+          this.rect = `${imgWidth},${res.w},${imgHeight},${res.h}`;
+          this.matrix = `${scaleX},${skewX},${skewY},${scaleY},${translateX},${res.y}`;
         }
         break;
-
-      case 'lb':
-        break;
-
-      case 'cb':
+      case 'rb':
         {
           const { translateX, translateY, width, height, scaleX, scaleY, skewX, skewY } = this.curRect;
-          const h = ~~(height + deltaY);
-          const res = this.check(translateX, translateY, this.width, h);
-          this.height = res.h;
+          const w = width + deltaX;
+          const h = height + deltaY;
+          const res = this.check(translateX, translateY, w, h);
+          const { imgWidth, imgHeight } = this.computedRect;
+          this.rect = `${imgWidth},${res.w},${imgHeight},${res.h}`;
+          this.matrix = `${scaleX},${skewX},${skewY},${scaleY},${res.x},${res.y}`;
         }
-        break;
-
-      case 'rb':
         break;
     }
   };
@@ -208,29 +250,9 @@ export default class AttrTable extends QuarkElement {
     setTimeout(() => {
       this.isCutting = false;
     });
-    alert(111);
-  };
-
-  setCropper = () => {
-    const s = window.getComputedStyle(this.cropperRef.current);
-    const x = this.cropperRef.current.offsetLeft;
-    const y = this.cropperRef.current.offsetTop;
-    const width = parseFloat(s.width);
-    const height = parseFloat(s.height);
-    const box = this.getBoundingClientRect();
-    console.log(333, x, y, width, height, box);
-    this.contentRef.current.style.cssText = `
-      width: ${width}px;
-      height: ${height}px;
-    `;
-    this.imgRef.current.style.cssText = `
-      transform-origin: left top;
-      transform: scale(${box.width / width} ) translate(-${x}px,-${y}px);
-    `;
   };
 
   // 需要进行边界判断
-
   check = (
     x: number,
     y: number,
@@ -242,7 +264,7 @@ export default class AttrTable extends QuarkElement {
     w: number;
     h: number;
   } => {
-    const { width, height } = this.contentRect;
+    const { imgWidth, imgHeight } = this.computedRect;
     const res = {
       x,
       y,
@@ -253,28 +275,28 @@ export default class AttrTable extends QuarkElement {
     if (w < this.MIN_WIDTH) {
       res.w = this.MIN_WIDTH;
       w = this.MIN_WIDTH;
-    } else if (w > width) {
-      res.w = width;
-      w = width;
+    } else if (w > imgWidth) {
+      res.w = imgWidth;
+      w = imgWidth;
     }
     if (h < this.MIN_HEIGHT) {
       res.h = this.MIN_HEIGHT;
       h = this.MIN_HEIGHT;
-    } else if (h > height) {
-      res.h = height;
-      h = height;
+    } else if (h > imgHeight) {
+      res.h = imgHeight;
+      h = imgHeight;
     }
 
     if (x < 0) {
       res.x = 0;
-    } else if (x + w > width) {
-      res.x = width - w;
+    } else if (x + w > imgWidth) {
+      res.x = imgWidth - w;
     }
 
     if (y < 0) {
       res.y = 0;
-    } else if (y + h > height) {
-      res.y = height - h;
+    } else if (y + h > imgHeight) {
+      res.y = imgHeight - h;
     }
     return res;
   };
@@ -283,6 +305,7 @@ export default class AttrTable extends QuarkElement {
     return (
       <>
         <div ref={this.contentRef} class="content" style={this.contentStyle}>
+          <img src={this.src} class="bg" alt="" />
           <div class="croppers" data-type="move" style={this.cropperStyle} ref={this.cropperRef} onMouseDown={this.listen}>
             <div class="cropper lt" data-type="lt" onMouseDown={this.listen}></div>
             <div class="cropper ct" data-type="ct" onMouseDown={this.listen}></div>

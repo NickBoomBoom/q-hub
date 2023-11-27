@@ -7,126 +7,185 @@
   <script type="module" src="./src/index.tsx"></script>
   <script crossorigin="anonymous" integrity="sha384-KcyRSlC9FQog/lJsT+QA8AUIFBgnwKM7bxm7/YaX+NTr4D00npYawrX0h+oXI3a2"
     src="https://lib.baomitu.com/jquery/1.12.4/jquery.js"></script>
-  <style>
-    .box {
-      border: 1px solid;
-      padding: 5px 10px;
-    }
-
-    .box .title {
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-  </style>
+  <script src="
+    https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js
+    "></script>
+  <link href="
+    https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css
+    " rel="stylesheet">
 </head>
 
 <body>
+  <q-doc-view title="前置">
+    <ul>
+      <li>
+        所有组件均有 data 的 get 方法, 返回当前组件的实时 property,用于第三方组件对组件的属性收集,避免再次通过 getAttribute 属性来重新获取.
+      </li>
+    </ul>
+  </q-doc-view>
   <q-doc-view title="q-code-area">
-    <q-attr-table>
-      value; string; undefined ;内容
-      readOnly; boolean; false ; 是否可读
-      language; string; javascript ; 初始语言
-    </q-attr-table>
+    <q-tabs slot="attr">
+      <q-tab title="属性">
+        <q-attr-table>
+          value; string; undefined ;内容
+          readOnly; boolean; false ; 是否可读
+          language; string; javascript ; 初始语言
+        </q-attr-table>
+      </q-tab>
+      <q-tab title="事件">
+        <q-attr-table type="event"> change; {value:string,language: string}; 变化 </q-attr-table>
+      </q-tab>
+      <q-tab title="方法">
+        <q-attr-table type="method">
+          setValue;(v:string):void;设置内容
+          setReadOnly;(v:boolean):void;设置可读
+          setLanguage;(v:string):void;设置语言
+        </q-attr-table>
+      </q-tab>
+    </q-tabs>
+    <q-tabs>
+      <q-tab title="编辑模式">
+        <q-html-code>
+          <q-code-area value="console.log('可编辑状态')"></q-code-area>
+        </q-html-code>
+      </q-tab>
+      <q-tab title="只读模式">
+        <q-html-code>
+          <q-code-area value="console.log('只读状态')" language="sql" readOnly></q-code-area>
+        </q-html-code>
+      </q-tab>
+    </q-tabs>
 
-    <q-attr-table type="event"> change; {value:string,language: string}; 变化 </q-attr-table>
-
-    <q-attr-table type="method">
-      setValue;(v:string):void;设置内容
-      setReadOnly;(v:boolean):void;设置可读
-      setLanguage;(v:string):void;设置语言
-    </q-attr-table>
-
-    <div class="example">
-      <q-code-area id="ca" value="console.log('可编辑状态')"></q-code-area>
-      <pre></pre>
-      <q-code-area id="ca2" value="console.log('只读状态')" language="sql" readOnly></q-code-area>
-      <pre></pre>
-    </div>
-
-    <script>
-      [$('#ca'), $('#ca2')].forEach((t) => {
-        t.on('change', (e) => {
-          t.next().html(JSON.stringify(e.detail, null, 2));
-        });
-      });
-    </script>
   </q-doc-view>
 
   <q-doc-view title="q-dialog">
-    <q-attr-table>
-      mask-close;boolean;false;设置为 true, 点击 mask 可关闭
-    </q-attr-table>
-    <q-attr-table type="event">
-      confirm; null; 确认事件
-      close; null; 取消事件
-    </q-attr-table>
-    <q-attr-table type="slot"> default;默认内容 footer;底部内容 </q-attr-table>
-    <div class="example">
-      <br />
-      <button id="dialog-button">默认样式</button>
-      <br />
-      <br />
-      <button id="dialog-button2">自定义内容</button>
+    <q-tabs slot="attr">
+      <q-tab title="属性">
+        <q-attr-table>
+          mask-close;boolean;false;设置为 true, 点击 mask 可关闭
+        </q-attr-table>
+      </q-tab>
+      <q-tab title="事件">
+        <q-attr-table type="event">
+          confirm; null; 确认事件
+          close; null; 取消事件
+        </q-attr-table>
+      </q-tab>
+      <q-tab title="插槽">
+        <q-attr-table type="slot">
+          default;默认内容
+          footer;底部内容
+        </q-attr-table>
+      </q-tab>
+    </q-tabs>
 
-      <q-dialog id="dialog"> 我是内容 我是内容 我是内容 我是内容 我是内容 </q-dialog>
-
-      <q-dialog id="dialog2">
-        我是内容 我是内容 我是内容 我是内容 我是内容
-        <div slot="footer" style="background-color: skyblue">我是尾巴</div>
-      </q-dialog>
-
-      <script>
-        $('#dialog-button').on('click', () => {
-          $('#dialog')[0].open();
-        });
-
-        $('#dialog-button2').on('click', () => {
-          $('#dialog2')[0].open();
-        });
-      </script>
-    </div>
+    <q-tabs>
+      <q-tab title="默认">
+        <q-html-code>
+          <q-dialog>
+            <button slot="button">默认样式</button>
+            我是内容 我是内容 我是内容 我是内容 我是内容
+          </q-dialog>
+        </q-html-code>
+      </q-tab>
+      <q-tab title="自定义内容">
+        <q-html-code>
+          <q-dialog id="custom-dialog">
+            <button slot="button">自定义内容</button>
+            我是内容 我是内容 我是内容 我是内容 我是内容
+            <div slot="footer" style="background-color: skyblue">我是footer,我有自己的颜色</div>
+          </q-dialog>
+        </q-html-code>
+      </q-tab>
+    </q-tabs>
   </q-doc-view>
 
   <q-doc-view title="q-media-player">
-    <q-attr-table> src;string;undefined;媒体文件url </q-attr-table>
-
-    <div class="example">
-      <q-media-player id="player" src="https://media.w3.org/2010/05/sintel/trailer.mp4"></q-media-player>
-      <br />
-      <q-media-player src="http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3"></q-media-player>
-    </div>
+    <q-tabs slot="attr">
+      <q-tab title="属性">
+        <q-attr-table> src;string;undefined;媒体文件url </q-attr-table>
+      </q-tab>
+    </q-tabs>
+    <q-tabs>
+      <q-tab title="视频文件">
+        <q-html-code>
+          <q-media-player id="player" src="https://media.w3.org/2010/05/sintel/trailer.mp4"></q-media-player>
+        </q-html-code>
+      </q-tab>
+      <q-tab title="音频文件">
+        <q-html-code>
+          <q-media-player src="http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3"></q-media-player>
+        </q-html-code>
+      </q-tab>
+    </q-tabs>
   </q-doc-view>
-
+  <q-doc-view title="q-cropper(暂未适配移动端)">
+    <q-tabs slot="attr">
+      <q-tab title="属性">
+        <q-attr-table>
+          src;string;undefined;图片地址
+          rect;string;undefined;[图片宽度,裁切宽度,图片高度,裁切高度]组成的字符串
+          matrix;string;1,0,0,1,0,0;[scaleX(), skewY(), skewX(), scaleY(), translateX(), translateY()]排列,默认会居中
+        </q-attr-table>
+      </q-tab>
+    </q-tabs>
+    <q-tabs>
+      <q-tab title="裁切模式">
+        <q-html-code>
+          <q-cropper style="width:500px" src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+          </q-cropper>
+        </q-html-code>
+      </q-tab>
+      <q-tab title="配置初始位置">
+        <q-html-code>
+          <q-cropper matrix="1,0,0,1,10,20" rect="300,200,300,100" style="width:500px"
+            src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+          </q-cropper>
+        </q-html-code>
+      </q-tab>
+    </q-tabs>
+  </q-doc-view>
   <q-doc-view title="q-image-resize">
-    <q-attr-table>
-      src;string;null;图片地址
-      readOnly;boolean;false;是否只读
-    </q-attr-table>
+    <q-tabs slot="attr">
+      <q-tab title="属性">
+        <q-attr-table>
+          src;string;null;图片地址
+          readOnly;boolean;false;是否只读
+        </q-attr-table>
+      </q-tab>
+      <q-tab title="插槽">
+        <q-attr-table type="slot">
+          toolbar;toolbar 插槽,当用户点击 resize 时显示
+        </q-attr-table>
+      </q-tab>
+    </q-tabs>
 
-    <div class="example">
-      <div style="width: 500px">
-        <h3>可控模式</h3>
-        <q-image-resize src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg"> </q-image-resize>
-      </div>
+    <q-tabs>
+      <q-tab title="编辑模式">
+        <q-html-code>
 
-      <div style="width: 500px">
-        <h3>只读模式</h3>
-        <q-image-resize readOnly src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg"> </q-image-resize>
-      </div>
-    </div>
+          <q-image-resize style="width: 500px" src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+          </q-image-resize>
+        </q-html-code>
+      </q-tab>
+      <q-tab title="基于裁剪数据">
+        <q-html-code>
+          <q-image-resize matrix="1,0,0,1,10,20" rect="500,200,332,100" style="width: 500px"
+            src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+          </q-image-resize>
+        </q-html-code>
+      </q-tab>
+      <q-tab title="只读模式">
+        <q-html-code>
+          <q-image-resize readOnly style="width: 500px"
+            src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+          </q-image-resize>
+        </q-html-code>
+      </q-tab>
+    </q-tabs>
   </q-doc-view>
 
-
-  <q-doc-view title="q-cropper">
-
-    <div class="example">
-
-      <q-cropper src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
-
-      </q-cropper>
-    </div>
-  </q-doc-view>
-
+  <q-toc />
   <p><a href="/index.vue.html">在 Vue.js 中调试（Debugging in Vue.js）</a></p>
 </body>
 

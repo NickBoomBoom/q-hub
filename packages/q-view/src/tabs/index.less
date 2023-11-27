@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  border: 1px solid #e5e5e5;
+  .header {
+    display: flex;
+    overflow-y: hidden;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    background-color: #f4f7fa;
+    width: 100%;
+
+    .fill {
+      flex: 1;
+      height: 30px;
+      padding: 5px 10px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    &-item {
+      padding: 5px 10px;
+      cursor: pointer;
+      height: 30px;
+      line-height: 30px;
+      font-size: 15px;
+      text-align: center;
+      border-bottom: 1px solid #e5e5e5;
+
+      &.active {
+        background-color: white;
+        border-left: 1px solid #e5e5e5;
+        border-right: 1px solid #e5e5e5;
+        color: #409eff;
+        position: relative;
+        border-bottom: 1px solid transparent;
+        &:nth-child(1) {
+          border-left: none !important;
+        }
+      }
+    }
+  }
+  .content {
+    padding: 10px;
+  }
+}

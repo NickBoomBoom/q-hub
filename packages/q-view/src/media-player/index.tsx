@@ -11,6 +11,12 @@ export default class EventTable extends QuarkElement {
     this.init();
   }
 
+  get data() {
+    return {
+      src: this.src,
+    };
+  }
+
   init() {
     if (!this.src) {
       return console.error('q-media-player src is null');

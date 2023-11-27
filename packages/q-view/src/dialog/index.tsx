@@ -48,6 +48,9 @@ export default class Dialog extends QuarkElement {
   render() {
     return (
       <>
+        <div onClick={this.open}>
+          <slot name="button"></slot>
+        </div>
         <div class={this.className} onClick={this.clickMask}>
           <div class="q-dialog-main" onClick={this.clickMain}>
             <div class="q-dialog-main--close" onClick={this.close}>
