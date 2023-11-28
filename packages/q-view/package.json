@@ -6,7 +6,7 @@
     "start": "vite --open",
     "build:lib": "vite build --config vite.config.build.ts && tsc",
     "build:web": "vite build --config vite.config.web.ts && tsc",
-    "publish": "pnpm run build:lib && pnpm publish --no-git-checks"
+    "push": "pnpm run build:lib && pnpm publish --no-git-checks"
   },
   "files": [
     "dist",

@@ -31,4 +31,4 @@ jobs:
           git add .
           git commit -m "q-view new version: $new_version"
           git push
-          pnpm run publish
+          pnpm run push
