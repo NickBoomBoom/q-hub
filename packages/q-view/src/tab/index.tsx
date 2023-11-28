@@ -7,10 +7,6 @@ export default class Tab extends QuarkElement {
   title = '';
 
   render() {
-    return (
-      <>
-        <slot />
-      </>
-    );
+    return <slot />;
   }
 }

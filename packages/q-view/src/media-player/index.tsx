@@ -3,7 +3,7 @@ import { isAudio, isVideo } from '../utils';
 import style from './index.less?inline';
 
 @customElement({ tag: 'q-media-player', style })
-export default class EventTable extends QuarkElement {
+export default class MediaPlayer extends QuarkElement {
   @property({ type: String })
   src = '';
   el: Ref<HTMLElement> = createRef();

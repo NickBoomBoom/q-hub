@@ -4,7 +4,41 @@
 <head>
   <meta charset="UTF-8" />
   <title>Q-VIEW</title>
+  <style>
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      padding: 20px;
+    }
+
+    .introduce {
+      display: flex;
+      align-items: center;
+      font-size: 30px;
+    }
+
+    .introduce-title {
+      margin-left: 20px;
+    }
+
+    .introduce-title .subtitle {
+      font-size: 18px;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    li>q-tabs {
+      margin-top: 10px;
+    }
+  </style>
   <script type="module" src="/src/index.tsx"></script>
+  <link rel="shortcut icon" href="https://pic.imgdb.cn/item/65654f5cc458853aef6cc8ab.webp" />
   <script crossorigin="anonymous" integrity="sha384-KcyRSlC9FQog/lJsT+QA8AUIFBgnwKM7bxm7/YaX+NTr4D00npYawrX0h+oXI3a2"
     src="https://lib.baomitu.com/jquery/1.12.4/jquery.js"></script>
   <script src="
@@ -13,15 +47,85 @@
   <link href="
     https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css
     " rel="stylesheet">
+
 </head>
 
 <body>
-  <q-doc-view title="前置">
-    <ul>
-      <li>
-        所有组件均有 data 的 get 方法, 返回当前组件的实时 property,用于第三方组件对组件的属性收集,避免再次通过 getAttribute 属性来重新获取.
-      </li>
-    </ul>
+  <q-doc-view toc-title="介绍">
+    <div class="introduce" slot="title">
+      <img src="https://pic.imgdb.cn/item/65654f5cc458853aef6cc89f.png" width=80 alt="">
+      <div class="introduce-title">
+        <b class="title">
+          Q-VIEW
+        </b>
+        <br>
+        <b class="subtitle">
+          一个web-components ui 库
+        </b>
+      </div>
+    </div>
+
+
+    <q-tabs>
+      <q-tab title="前置">
+        <ul>
+          <li>
+            所有组件均有 data 的 get 方法, 返回当前组件的实时 property,用于第三方组件对组件的属性收集,避免再次通过 getAttribute 属性来重新获取.
+          </li>
+        </ul>
+      </q-tab>
+      <q-tab title="文档用web-components">
+        <ol>
+          <li>
+            q-doc-view 文档块
+
+            <q-tabs>
+              <q-tab title="属性">
+                <q-attr-table>
+                  title;string;undefined;标题(当 slot=title 存在时,title 不显示)
+                </q-attr-table>
+              </q-tab>
+              <q-tab title="插槽">
+                <q-attr-table type="slot">
+                  title;标题
+                  attr;属性
+                  default;默认
+                </q-attr-table>
+              </q-tab>
+            </q-tabs>
+          </li>
+          <li>
+            q-attr-table 属性表格
+            <q-tabs>
+              <q-tab title="属性">
+                <q-attr-table>
+                  type;attr|event|slot|method;attr;属性|事件|插槽|方法
+                </q-attr-table>
+              </q-tab>
+            </q-tabs>
+          </li>
+          <li>
+            q-html-code 切换html 源码
+          </li>
+          <li>
+            q-tabs tabs 切换
+          </li>
+          <li>
+            q-tab tabs 内部 item
+            <q-tabs>
+              <q-tab title="属性">
+                <q-attr-table>
+                  title;string;undefined;标题
+                </q-attr-table>
+              </q-tab>
+            </q-tabs>
+          </li>
+          <li>
+            q-toc 自动搜查所有 q-doc-view 的标题,形成跳转链接
+          </li>
+        </ol>
+      </q-tab>
+    </q-tabs>
   </q-doc-view>
   <q-doc-view title="q-code-area">
     <q-tabs slot="attr">

@@ -25,7 +25,6 @@ export default class Tabs extends QuarkElement {
       ...this.list,
       ...tabs.map((t, i) => {
         t.setAttribute('data-index', i);
-        this.contentRef.current.appendChild(t);
         return {
           title: t.title,
           dom: t,
