@@ -195,13 +195,15 @@ export default class ImageResize extends QuarkElement {
   getClassName = () => {
     return `q-image-resize ${this.readOnly ? 'readOnly' : ''} ${this.isControl ? 'focus' : ''} ${this.isCropper ? 'cropper' : ''}`;
   };
-
+  emitLoad = () => {
+    this.$emit('load');
+  };
   render() {
     return (
       <>
         <div ref={this.elRef} class={this.getClassName()} onClick={this.handleClick}>
           <div ref={this.contentRef} class="content" style={this.contentStyle}>
-            <img ref={this.imgRef} style={this.imgStyle} src={this.src} />
+            <img ref={this.imgRef} style={this.imgStyle} src={this.src} onLoad={this.emitLoad} />
           </div>
           {this.isControl && (
             <div class="anchors">
