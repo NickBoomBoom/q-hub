@@ -61,6 +61,13 @@ export default class ImageCropperResize extends QuarkElement {
     }
   }
 
+  componentDidMount(): void {
+    this.imageResizeRef.current.addEventListener('load', () => {
+      console.log('我接受到了');
+      this.$emit('load');
+    });
+  }
+
   componentWillUnmount(): void {
     this.imageResizeRef?.current?.addEventListener('confirm', this.handleResizeConfirm);
     this.imageCropperRef?.current?.addEventListener('cancel', this.closeCropper);
