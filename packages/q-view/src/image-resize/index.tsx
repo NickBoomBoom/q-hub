@@ -51,12 +51,12 @@ export default class ImageResize extends QuarkElement {
   originRect = null;
 
   get computedRect(): RECT {
-    const [imgWidth, cropperWidth, imgHeight, cropperHeight] = (this.rect || '').split(',').map((t) => +t);
+    const [imgWidth, cropperWidth, imgHeight, cropperHeight] = (this.rect || '').split(',').map((t) => (t ? +t : 0));
     return {
-      imgWidth: imgWidth || 0,
-      cropperWidth: cropperWidth || 0,
-      imgHeight: imgHeight || 0,
-      cropperHeight: cropperHeight || 0,
+      imgWidth,
+      cropperWidth,
+      imgHeight,
+      cropperHeight,
     };
   }
 

@@ -77,7 +77,7 @@ export default class ImageCropper extends QuarkElement {
   }
 
   get computedRect(): RECT {
-    const [imgWidth, cropperWidth, imgHeight, cropperHeight] = (this.rect || '').split(',').map((t) => +t);
+    const [imgWidth, cropperWidth, imgHeight, cropperHeight] = (this.rect || '').split(',').map((t) => (t ? +t : 0));
     return {
       imgWidth,
       cropperWidth,
