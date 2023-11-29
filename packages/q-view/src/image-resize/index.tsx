@@ -1,7 +1,7 @@
 import { QuarkElement, Ref, createRef, customElement, property, state } from 'quarkc';
 import style from './index.less?inline';
 import Dialog from '../dialog';
-import { getTransformByMatrix } from '../utils';
+import { getTransformByMatrix, computeDistancePoint } from '../utils';
 
 interface RECT {
   imgWidth: number;
@@ -11,25 +11,16 @@ interface RECT {
 }
 @customElement({ tag: 'q-image-resize', style })
 export default class ImageResize extends QuarkElement {
-  @state()
-  isControl = false;
-
-  @state()
-  isCropper = false;
-
-  @property({
-    type: Number,
-  })
-  width = 0;
-
-  @property({
-    type: Number,
-  })
-  height = 0;
-
   @property({ type: String })
   src = '';
 
+  @property({ type: Number })
+  width = 0;
+
+  @property({ type: Number })
+  height = 0;
+
+  // q-image-cropper 裁剪数据
   @property({ type: String })
   matrix = '';
 
@@ -38,6 +29,9 @@ export default class ImageResize extends QuarkElement {
 
   @property({ type: Boolean })
   readOnly = false;
+
+  @state()
+  isControl = false;
 
   elRef: Ref<HTMLElement> = createRef();
   dialogRef: Ref<Dialog> = createRef();
@@ -59,58 +53,88 @@ export default class ImageResize extends QuarkElement {
   get computedRect(): RECT {
     const [imgWidth, cropperWidth, imgHeight, cropperHeight] = (this.rect || '').split(',').map((t) => +t);
     return {
-      imgWidth,
-      cropperWidth,
-      imgHeight,
-      cropperHeight,
+      imgWidth: imgWidth || 0,
+      cropperWidth: cropperWidth || 0,
+      imgHeight: imgHeight || 0,
+      cropperHeight: cropperHeight || 0,
+    };
+  }
+
+  get parentStyle(): {
+    width: number;
+    height: number;
+  } {
+    const { width, height } = this.getBoundingClientRect();
+    return {
+      width,
+      height,
     };
   }
 
   get contentStyle() {
-    const { cropperWidth, cropperHeight } = this.computedRect;
     return {
-      width: cropperWidth || '100%',
-      height: cropperHeight || 'auto',
+      width: this.width || '100%',
+      height: this.height || 'auto',
     };
   }
 
   get imgStyle() {
-    const { imgWidth, imgHeight, cropperWidth, cropperHeight } = this.computedRect;
+    const { imgWidth, imgHeight } = this.computedRect;
     const { cropperWidth: originCropperWidth, cropperHeight: originCropperHeight } = this.originRect || {};
     const { translateX, translateY, skewX, skewY } = getTransformByMatrix(this.matrix || '1,0,0,1,0,0');
     // matrix( scaleX(), skewY(), skewX(), scaleY(), translateX(), translateY() )
+    const scaleX = this.width ? this.width / (originCropperWidth || this.width) : 1;
+    const scaleY = this.height ? this.height / (originCropperHeight || this.height) : 1;
 
-    const scaleX = cropperWidth / originCropperWidth;
-    const scaleY = cropperHeight / originCropperHeight;
     return {
       width: imgWidth || '100%',
       height: imgHeight || '100%',
-      margin: `-${translateY}px 0 0 -${translateX}px`,
-      transform: `matrix(${scaleX}, ${skewY}, ${skewX}, ${scaleY}, 0, 0)`,
+      transform: `matrix(${scaleX}, ${skewY}, ${skewX}, ${scaleY}, -${translateX * scaleX}, -${translateY * scaleY})`,
     };
   }
 
   get data() {
     return {
-      rect: this.rect,
       src: this.src,
+      width: this.width,
+      height: this.height,
+      rect: this.rect,
+      matrix: this.matrix,
       readOnly: this.readOnly,
     };
   }
 
+  componentDidMount(): void {
+    const { cropperWidth, cropperHeight } = this.computedRect;
+    this.width = cropperWidth;
+    this.height = cropperHeight;
+    this.originRect = {
+      cropperWidth,
+      cropperHeight,
+    };
+  }
+
+  shouldComponentUpdate(propName: string, oldValue: any, newValue: any): boolean {
+    if (['width', 'height'].includes(propName)) {
+      if (oldValue === newValue) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   listen = (e) => {
+    this.$emit('resizestart');
     this.isMoving = true;
     this.startEl = e.target;
     this.startX = e.clientX;
     this.startY = e.clientY;
-    const { width, height } = this.getBoundingClientRect();
+
     this.curRect = {
-      width: this.computedRect.cropperWidth || width,
-      height: this.computedRect.cropperHeight || height,
+      width: this.width || this.parentStyle.width,
+      height: this.height || this.parentStyle.height,
     };
-    if (!this.originRect) {
-      this.originRect = JSON.parse(JSON.stringify(this.computedRect));
-    }
+
     this.setCursor(window.getComputedStyle(this.startEl).cursor);
     document.addEventListener('mousemove', this.handleMouseMove, false);
     document.addEventListener('mouseup', this.handleMouseUp, false);
@@ -119,6 +143,9 @@ export default class ImageResize extends QuarkElement {
   handleMouseMove = (e) => {
     const deltaX = e.clientX - this.startX;
     const deltaY = e.clientY - this.startY;
+
+    // 同比例放大
+    // const distance = computeDistancePoint(this.startX, this.startY, e.clientX, e.clientY);
     const type = this.startEl.getAttribute('data-type');
     let width;
     let height;
@@ -126,6 +153,7 @@ export default class ImageResize extends QuarkElement {
       case 'lt':
         width = this.curRect.width - deltaX;
         height = this.curRect.height - deltaY;
+
         break;
       case 'rt':
         width = this.curRect.width + deltaX;
@@ -140,15 +168,18 @@ export default class ImageResize extends QuarkElement {
         height = this.curRect.height + deltaY;
         break;
     }
-    const { imgWidth, imgHeight } = this.computedRect;
-    this.rect = `${imgWidth},${width},${imgHeight},${height}`;
+    this.width = width > this.parentStyle.width ? this.parentStyle.width : width;
+    this.height = height;
   };
 
-  handleMouseUp = (e) => {
+  handleMouseUp = () => {
     this.setCursor('');
     document.removeEventListener('mousemove', this.handleMouseMove, false);
     document.removeEventListener('mouseup', this.handleMouseUp, false);
     setTimeout(() => {
+      this.$emit('resizeend', {
+        detail: this.data,
+      });
       this.isMoving = false;
     });
   };
@@ -178,6 +209,9 @@ export default class ImageResize extends QuarkElement {
     if (this.isControl) {
       window.addEventListener('click', this.handleClickByOut);
     } else {
+      this.$emit('confirm', {
+        detail: this.data,
+      });
       window.removeEventListener('click', this.handleClickByOut);
     }
   };
@@ -192,9 +226,11 @@ export default class ImageResize extends QuarkElement {
   stopToolbar = (e) => {
     e.stopPropagation();
   };
+
   getClassName = () => {
-    return `q-image-resize ${this.readOnly ? 'readOnly' : ''} ${this.isControl ? 'focus' : ''} ${this.isCropper ? 'cropper' : ''}`;
+    return `q-image-resize${this.readOnly ? ' readOnly' : ''}${this.isControl ? ' focus' : ''}`;
   };
+
   emitLoad = () => {
     this.$emit('load');
   };

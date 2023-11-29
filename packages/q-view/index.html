@@ -209,11 +209,17 @@
       <q-tab title="属性">
         <q-attr-table> src;string;undefined;媒体文件url </q-attr-table>
       </q-tab>
+      <q-tab title="事件">
+        <q-attr-table type="event">
+          load;null;加载成功
+          error;null;报错
+        </q-attr-table>
+      </q-tab>
     </q-tabs>
     <q-tabs>
       <q-tab title="视频文件">
         <q-html-code>
-          <q-media-player id="player" src="https://media.w3.org/2010/05/sintel/trailer.mp4"></q-media-player>
+          <q-media-player src="https://media.w3.org/2010/05/sintel/trailer.mp4"></q-media-player>
         </q-html-code>
       </q-tab>
       <q-tab title="音频文件">
@@ -223,7 +229,7 @@
       </q-tab>
     </q-tabs>
   </q-doc-view>
-  <q-doc-view title="q-image-cropper(暂未适配移动端)">
+  <q-doc-view title="q-image-cropper(暂未适配移动端)" toc-title="q-image-cropper">
     <q-tabs slot="attr">
       <q-tab title="属性">
         <q-attr-table>
@@ -232,11 +238,20 @@
           matrix;string;1,0,0,1,0,0;[scaleX(), skewY(), skewX(), scaleY(), translateX(), translateY()]排列,默认会居中
         </q-attr-table>
       </q-tab>
+
+      <q-tab title="事件">
+        <q-attr-table type="event">
+          confirm; {rect:string,matrix:string,src:string};确认事件
+          cancel; {rect:string,matrix:string,src:string};取消事件
+          load;null;加载图片成功
+        </q-attr-table>
+      </q-tab>
     </q-tabs>
     <q-tabs>
       <q-tab title="裁切模式">
         <q-html-code>
-          <q-image-cropper style="width:500px" src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+          <q-image-cropper id="cropper" style="width:500px"
+            src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
           </q-image-cropper>
         </q-html-code>
       </q-tab>
@@ -257,6 +272,14 @@
           readOnly;boolean;false;是否只读
         </q-attr-table>
       </q-tab>
+      <q-tab title="事件">
+        <q-attr-table type="event">
+          load;null;加载成功
+          resizestart;null;开始 resize
+          resizeend;this.data;结束 resize
+          confirm;this.data;确认 resize width&height
+        </q-attr-table>
+      </q-tab>
       <q-tab title="插槽">
         <q-attr-table type="slot">
           toolbar;toolbar 插槽,当用户点击 resize 时显示
@@ -267,14 +290,15 @@
     <q-tabs>
       <q-tab title="编辑模式">
         <q-html-code>
-
-          <q-image-resize style="width: 500px" src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
-          </q-image-resize>
+          <div style="width: 500px">
+            <q-image-resize src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+            </q-image-resize>
+          </div>
         </q-html-code>
       </q-tab>
       <q-tab title="基于裁剪数据">
         <q-html-code>
-          <q-image-resize matrix="1,0,0,1,10,20" rect="500,200,332,100" style="width: 500px"
+          <q-image-resize matrix="1,0,0,1,100,200" rect="500,200,332,100" style="width: 500px"
             src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
           </q-image-resize>
         </q-html-code>
@@ -301,6 +325,15 @@
         </q-html-code>
       </q-tab>
 
+    </q-tabs>
+  </q-doc-view>
+
+  <q-doc-view title="q-image-cropper-resize">
+    <q-tabs>
+      <q-tab title="默认">
+        <q-image-cropper-resize src="https://static-cse.canva.cn/blob/239388/e1604019539295.jpg">
+        </q-image-cropper-resize>
+      </q-tab>
     </q-tabs>
   </q-doc-view>
   <q-toc>

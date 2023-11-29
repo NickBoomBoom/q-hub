@@ -29,7 +29,7 @@ export default class Toc extends QuarkElement {
           {this.list.map((t, i) => {
             return (
               <div class="item" onClick={() => t.scrollIntoView({ behavior: 'smooth' })}>
-                {i + 1}.{t.title || t.tocTitle}
+                {i + 1}.{t.tocTitle || t.title}
               </div>
             );
           })}

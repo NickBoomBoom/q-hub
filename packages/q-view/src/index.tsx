@@ -9,6 +9,7 @@ export * from './tabs';
 export * from './tab';
 export * from './html-code';
 export * from './toc';
+export * from './image-cropper-resize';
 
 import CodeArea from './code-area';
 import AttrTable from './attr-table';
@@ -17,6 +18,7 @@ import DocView from './doc-view';
 import HtmlCode from './html-code';
 import ImageCropper from './image-cropper';
 import ImageResize from './image-resize';
+import ImageCropperResize from './image-cropper-resize';
 import MediaPlayer from './media-player';
 import Tabs from './tabs';
 import Tab from './tab';
@@ -30,6 +32,7 @@ declare global {
     'q-html-code': HtmlCode;
     'q-image-cropper': ImageCropper;
     'q-image-resize': ImageResize;
+    'q-image-cropper-resize': ImageCropperResize;
     'q-media-player': MediaPlayer;
     'q-tabs': Tabs;
     'q-tab': Tab;

@@ -92,3 +92,13 @@ export function getTransformByMatrix(str: string): {
     translateY,
   };
 }
+
+export function computeDistancePoint(x1: number, y1: number, x2: number, y2: number): number {
+  const deltaX = x2 - x1;
+  const deltaY = y2 - y1;
+
+  // 计算欧几里得距离
+  const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+  return distance;
+}
