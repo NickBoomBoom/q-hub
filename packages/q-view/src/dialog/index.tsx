@@ -45,6 +45,7 @@ export default class Dialog extends QuarkElement {
   clickMain = (e) => {
     e.stopPropagation();
   };
+
   render() {
     return (
       <>
