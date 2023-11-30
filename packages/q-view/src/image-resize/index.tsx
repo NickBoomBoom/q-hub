@@ -48,8 +48,6 @@ export default class ImageResize extends QuarkElement {
     height: null,
   };
 
-  originRect = null;
-
   get computedRect(): RECT {
     const [imgWidth, cropperWidth, imgHeight, cropperHeight] = (this.rect || '').split(',').map((t) => (t ? +t : 0));
     return {
@@ -79,12 +77,11 @@ export default class ImageResize extends QuarkElement {
   }
 
   get imgStyle() {
-    const { imgWidth, imgHeight } = this.computedRect;
-    const { cropperWidth: originCropperWidth, cropperHeight: originCropperHeight } = this.originRect || {};
+    const { imgWidth, imgHeight, cropperWidth, cropperHeight } = this.computedRect;
     const { translateX, translateY, skewX, skewY } = getTransformByMatrix(this.matrix || '1,0,0,1,0,0');
     // matrix( scaleX(), skewY(), skewX(), scaleY(), translateX(), translateY() )
-    const scaleX = this.width ? this.width / (originCropperWidth || this.width) : 1;
-    const scaleY = this.height ? this.height / (originCropperHeight || this.height) : 1;
+    const scaleX = this.width ? this.width / (cropperWidth || this.width) : 1;
+    const scaleY = this.height ? this.height / (cropperHeight || this.height) : 1;
 
     return {
       width: imgWidth || '100%',
@@ -106,12 +103,8 @@ export default class ImageResize extends QuarkElement {
 
   componentDidMount(): void {
     const { cropperWidth, cropperHeight } = this.computedRect;
-    this.width = cropperWidth;
-    this.height = cropperHeight;
-    this.originRect = {
-      cropperWidth,
-      cropperHeight,
-    };
+    this.width = this.width || cropperWidth;
+    this.height = this.height || cropperHeight;
   }
 
   shouldComponentUpdate(propName: string, oldValue: any, newValue: any): boolean {
@@ -143,7 +136,6 @@ export default class ImageResize extends QuarkElement {
   handleMouseMove = (e) => {
     const deltaX = e.clientX - this.startX;
     const deltaY = e.clientY - this.startY;
-
     // 同比例放大
     // const distance = computeDistancePoint(this.startX, this.startY, e.clientX, e.clientY);
     const type = this.startEl.getAttribute('data-type');
@@ -174,13 +166,13 @@ export default class ImageResize extends QuarkElement {
 
   handleMouseUp = () => {
     this.setCursor('');
-    document.removeEventListener('mousemove', this.handleMouseMove, false);
-    document.removeEventListener('mouseup', this.handleMouseUp, false);
     setTimeout(() => {
       this.$emit('resizeend', {
         detail: this.data,
       });
       this.isMoving = false;
+      document.removeEventListener('mousemove', this.handleMouseMove, false);
+      document.removeEventListener('mouseup', this.handleMouseUp, false);
     });
   };
 

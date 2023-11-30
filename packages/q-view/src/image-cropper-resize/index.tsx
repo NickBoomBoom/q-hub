@@ -56,22 +56,22 @@ export default class ImageCropperResize extends QuarkElement {
         this.imageCropperRef.current.addEventListener('cancel', this.closeCropper);
         this.imageCropperRef.current.addEventListener('confirm', this.handleCropperConfirm);
       } else {
-        this.imageResizeRef.current.addEventListener('confirm', this.handleResizeConfirm);
+        this.imageResizeRef.current.addEventListener('resizeend', this.handleResizeEnd);
       }
     }
   }
 
   componentDidMount(): void {
+    this.imageResizeRef.current.addEventListener('resizeend', this.handleResizeEnd);
     this.imageResizeRef.current.addEventListener('load', () => {
-      console.log('我接受到了');
       this.$emit('load');
     });
   }
 
   componentWillUnmount(): void {
-    this.imageResizeRef?.current?.addEventListener('confirm', this.handleResizeConfirm);
-    this.imageCropperRef?.current?.addEventListener('cancel', this.closeCropper);
-    this.imageCropperRef?.current?.addEventListener('confirm', this.handleCropperConfirm);
+    this.imageResizeRef?.current?.removeEventListener('resizeend', this.handleResizeEnd);
+    this.imageCropperRef?.current?.removeEventListener('cancel', this.closeCropper);
+    this.imageCropperRef?.current?.removeEventListener('confirm', this.handleCropperConfirm);
   }
 
   handleCropperConfirm = (e) => {
@@ -85,7 +85,7 @@ export default class ImageCropperResize extends QuarkElement {
     this.closeCropper();
   };
 
-  handleResizeConfirm = (e) => {
+  handleResizeEnd = (e) => {
     const {
       detail: { width, height },
     } = e;
@@ -98,16 +98,9 @@ export default class ImageCropperResize extends QuarkElement {
       <>
         <div>
           {this.isCropper ? (
-            <q-image-cropper
-              ref={this.imageCropperRef}
-              width={this.width}
-              height={this.height}
-              rect={this.rect}
-              matrix={this.matrix}
-              src={this.src}
-            ></q-image-cropper>
+            <q-image-cropper ref={this.imageCropperRef} rect={this.rect} matrix={this.matrix} src={this.src}></q-image-cropper>
           ) : (
-            <q-image-resize ref={this.imageResizeRef} rect={this.rect} matrix={this.matrix} src={this.src}>
+            <q-image-resize ref={this.imageResizeRef} width={this.width} height={this.height} rect={this.rect} matrix={this.matrix} src={this.src}>
               <div slot="toolbar" class="toolbar">
                 <button class="cropper" onClick={this.toggleCropper}>
                   裁剪
