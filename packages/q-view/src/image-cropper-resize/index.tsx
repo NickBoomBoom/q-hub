@@ -23,6 +23,16 @@ export default class ImageCropperResize extends QuarkElement {
   @state()
   isCropper = false;
 
+  get computedRect() {
+    const [imgWidth, cropperWidth, imgHeight, cropperHeight] = (this.rect || '').split(',').map((t) => (t ? +t : 0));
+    return {
+      imgWidth,
+      cropperWidth,
+      imgHeight,
+      cropperHeight,
+    };
+  }
+
   get data() {
     return {
       // q-image-resize
@@ -80,8 +90,9 @@ export default class ImageCropperResize extends QuarkElement {
     } = e;
     this.rect = rect;
     this.matrix = matrix;
-    this.width = 0;
-    this.height = 0;
+    const { cropperWidth, cropperHeight } = this.computedRect;
+    this.width = cropperWidth;
+    this.height = cropperHeight;
     this.closeCropper();
   };
 
