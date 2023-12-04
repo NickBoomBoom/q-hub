@@ -23,7 +23,7 @@ interface RECT {
 @customElement({ tag: 'q-image-cropper', style })
 export default class ImageCropper extends QuarkElement {
   MIN_WIDTH = 30;
-  MIN_HEIGHT = 50;
+  MIN_HEIGHT = 80;
 
   @property({ type: String })
   src = null;
@@ -105,21 +105,19 @@ export default class ImageCropper extends QuarkElement {
     };
   }
   componentDidMount() {
-    this.init();
+    setTimeout(() => {
+      this.init();
+    });
   }
 
   init = async () => {
-    try {
-      const info = await getImgInfoByDom(this.src, this);
-      const { cropperWidth, cropperHeight } = this.computedRect;
-      this.rect = `${info.width},${cropperWidth || info.width * 0.6},${info.height},${cropperHeight || info.height * 0.4}`;
-      this.initMatrix();
-      this.$emit('load', {
-        detail: this.data,
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    const info = await getImgInfoByDom(this.src, this);
+    const { cropperWidth, cropperHeight } = this.computedRect;
+    this.rect = `${info.width},${cropperWidth || info.width * 0.6},${info.height},${cropperHeight || info.height * 0.4}`;
+    this.initMatrix();
+    this.$emit('load', {
+      detail: this.data,
+    });
   };
 
   initMatrix = () => {
@@ -315,6 +313,12 @@ export default class ImageCropper extends QuarkElement {
     });
   };
 
+  handleFull = () => {
+    const { imgWidth, imgHeight } = this.computedRect;
+    this.rect = `${imgWidth},${imgWidth},${imgHeight},${imgHeight}`;
+    this.matrix = `1,0,0,1,0,0`;
+  };
+
   render() {
     return (
       <>
@@ -345,7 +349,16 @@ export default class ImageCropper extends QuarkElement {
                 </svg>
               </div>
 
-              <div onClick={this.emitCancel} class="cancel hover-tip">
+              <div className="full hover-tip" onClick={this.handleFull}>
+                <svg t="1701672646843" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13416" width="20" height="20">
+                  <path
+                    d="M639.328 416a31.872 31.872 0 0 0 22.304-9.056L864.256 209.76l-0.8 143.808a32 32 0 0 0 31.808 32.192h0.192a32 32 0 0 0 32-31.808l1.248-222.208c0-0.672-0.352-1.248-0.384-1.92 0.032-0.512 0.288-0.896 0.288-1.408a32 32 0 0 0-31.968-32.032L671.52 96a32 32 0 0 0-0.032 64l151.872 0.224-206.368 200.8A32 32 0 0 0 639.328 416z m256.704 223.552A32 32 0 0 0 864 671.52l-0.224 151.872-200.832-206.4a32 32 0 0 0-45.888 44.608L814.24 864.224l-143.808-0.8h-0.192a32 32 0 0 0-0.192 64l222.24 1.248h0.192c0.64 0 1.12-0.32 1.76-0.352 0.512 0.032 0.896 0.288 1.408 0.288h0.032a32 32 0 0 0 32-31.968l0.32-225.056a32 32 0 0 0-31.968-32.032zM209.76 159.744l143.808 0.8h0.192a32 32 0 0 0 0.192-64L131.68 95.328h-0.192c-0.672 0-1.248 0.352-1.888 0.384-0.448 0-0.8-0.256-1.248-0.256h-0.032a32 32 0 0 0-32 31.968L96 352.448a32 32 0 0 0 31.968 32.032H128a32 32 0 0 0 32-31.968l0.224-151.936 200.832 206.4a31.904 31.904 0 0 0 45.248 0.64 32 32 0 0 0 0.64-45.248L209.76 159.744z m152.608 457.312L159.744 814.24l0.8-143.808a32 32 0 0 0-31.808-32.192h-0.192a32 32 0 0 0-32 31.808l-1.248 222.24c0 0.704 0.352 1.312 0.384 2.016 0 0.448-0.256 0.832-0.256 1.312a32 32 0 0 0 31.968 32.032l225.056 0.352h0.032a32 32 0 0 0 0.032-64l-151.936-0.224 206.4-200.832a32 32 0 1 0-44.608-45.888z"
+                    p-id="13417"
+                  ></path>
+                </svg>
+              </div>
+
+              <div class="cancel hover-tip" onClick={this.emitCancel}>
                 <svg t="1701229855353" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="32790" width="20" height="20">
                   <path
                     d="M482.7 249.9V106.1c0-37.4-45.3-56.2-71.7-29.7L140.3 347c-16.4 16.4-16.4 43 0 59.4L410.9 677c26.5 26.5 71.7 7.7 71.7-29.7v-155c96.1-0.3 271.5-10.7 271.5 227.7 0 118.1-92.8 216.8-216 239.6 198.1-24.4 326-236 326-361.9 0.1-292.6-309.4-346.3-381.4-347.8z"

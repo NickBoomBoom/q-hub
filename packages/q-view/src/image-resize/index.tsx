@@ -222,7 +222,28 @@ export default class ImageResize extends QuarkElement {
           </div>
           {this.isControl && (
             <div class="anchors">
-              <div class="anchor rb" data-type="rb" onMouseDown={this.listen}></div>
+              <svg
+                class="anchor rb"
+                data-type="rb"
+                onMouseDown={this.listen}
+                t="1701674290144"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="16999"
+              >
+                <path
+                  d="M471.296 426.048 244.992 199.744 380.8 64 64 64 64 380.8 199.744 244.992 426.048 471.296Z"
+                  fill="#191919"
+                  p-id="17000"
+                ></path>
+                <path
+                  d="M365.969882 621.518643l256.004141-256.004141 45.2544 45.2544-256.004141 256.004141-45.2544-45.2544Z"
+                  fill="#191919"
+                  p-id="17001"
+                ></path>
+                <path d="M822.656 777.344 607.04 561.792 561.792 607.04 777.344 822.656 640 960 960 960 960 640Z" fill="#191919" p-id="17002"></path>
+              </svg>
             </div>
           )}
 

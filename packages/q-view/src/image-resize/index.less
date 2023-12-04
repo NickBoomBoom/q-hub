@@ -1,6 +1,6 @@
 :host {
-  @anchor-width: 14px;
-  @anchor-offset: -7px;
+  @anchor-width: 18px;
+  @anchor-offset: calc(-@anchor-width / 2);
   display: block;
   .q-image-resize {
     display: inline-block;
@@ -36,12 +36,16 @@
 
     .anchor {
       position: absolute;
-      width: @anchor-width;
-      height: @anchor-width;
+
       background-color: rgba(255, 255, 255, 0.9);
       border: 1px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       &.rb {
+        width: @anchor-width;
+        height: @anchor-width;
         right: @anchor-offset;
         cursor: nwse-resize;
         bottom: @anchor-offset;

@@ -38,7 +38,6 @@ export function getImgInfoByDom(
 }> {
   return new Promise((resolve, reject) => {
     const { width } = el.getBoundingClientRect();
-    const newEl = document.createElement('div');
     const img = new Image();
     img.src = src;
     img.width = width;
@@ -47,19 +46,16 @@ export function getImgInfoByDom(
         width: e.target.width,
         height: e.target.height,
       });
-      newEl.remove();
+      img.remove();
     };
     img.onerror = (e) => {
       reject(e);
     };
-    newEl.appendChild(img);
-    newEl.style.cssText = `
-      position:fixed;
-      width: ${width}px;
+    img.style.cssText = `
+      position:fixed; 
       top: -10000000px;
     `;
-
-    document.body.appendChild(newEl);
+    document.body.appendChild(img);
   });
 }
 
