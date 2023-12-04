@@ -248,7 +248,7 @@ export default class ImageResize extends QuarkElement {
           )}
 
           {this.isControl && (
-            <div className="toolbar" onClick={this.stopToolbar}>
+            <div class="toolbar" onClick={this.stopToolbar}>
               <slot name="toolbar"></slot>
             </div>
           )}

@@ -2,17 +2,30 @@
   display: block;
   padding-top: 30px;
   .toolbar {
-    .cropper {
+    border: 1px solid #e8e8eb;
+    padding: 2px;
+    display: flex;
+    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 1px;
+    button {
       border-radius: 5px;
-      padding: 0 10px;
-      margin-left: 10px;
-      height: 25px;
-      line-height: 25px;
+      padding: 0 4px;
       border: 1px solid transparent;
       cursor: pointer;
       letter-spacing: 1px;
-      color: white;
-      background-color: #409eff;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      &:hover {
+        background-color: #eff2f5;
+      }
     }
   }
 }
