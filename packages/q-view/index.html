@@ -15,7 +15,9 @@
       padding: 20px;
     }
 
-
+    .app {
+      opacity: 0;
+    }
 
     .introduce {
       display: flex;
@@ -41,8 +43,7 @@
   </style>
   <script type="module" src="/src/index.tsx"></script>
   <link rel="shortcut icon" href="https://pic.imgdb.cn/item/65654f5cc458853aef6cc8ab.webp" />
-  <script crossorigin="anonymous" integrity="sha384-KcyRSlC9FQog/lJsT+QA8AUIFBgnwKM7bxm7/YaX+NTr4D00npYawrX0h+oXI3a2"
-    src="https://lib.baomitu.com/jquery/1.12.4/jquery.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="
     https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js
     "></script>
@@ -390,6 +391,12 @@
       <div slot="footer"><a href="/index.vue.html">在 Vue.js 中调试</a></div>
     </q-toc>
   </div>
+
+  <script>
+    $('.app').animate({
+      opacity: 1
+    }, 500)
+  </script>
 </body>
 
 </html>
