@@ -73,6 +73,7 @@ export default class ImageResize extends QuarkElement {
     return {
       width: this.width || '100%',
       height: this.height || 'auto',
+      overflow: 'hidden',
     };
   }
 
@@ -87,6 +88,9 @@ export default class ImageResize extends QuarkElement {
       width: imgWidth || '100%',
       height: imgHeight || '100%',
       transform: `matrix(${scaleX}, ${skewY}, ${skewX}, ${scaleY}, -${translateX * scaleX}, -${translateY * scaleY})`,
+      userSelect: 'none',
+      display: 'block',
+      transformOrigin: 'left top',
     };
   }
 
