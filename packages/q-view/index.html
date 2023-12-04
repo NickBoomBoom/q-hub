@@ -168,7 +168,8 @@
       <q-tabs slot="attr">
         <q-tab title="属性">
           <q-attr-table>
-            mask-close;boolean;false;设置为 true, 点击 mask 可关闭
+            mask-close;boolean;true;设置为 true, 点击 mask 可关闭
+            destroy-after-close;boolean;false;是否在关闭后销毁内容
           </q-attr-table>
         </q-tab>
         <q-tab title="事件">
@@ -188,21 +189,66 @@
       <q-tabs>
         <q-tab title="默认">
           <q-html-code>
-            <q-dialog>
-              <button slot="button">默认样式</button>
-              我是内容 我是内容 我是内容 我是内容 我是内容
+            <button onclick="openDefaultDialog()">默认样式</button>
+            <q-dialog id="defaultDialog">
+              <p>
+                我是内容 我是内容 我是内容 我是内容 我是内容
+              </p>
             </q-dialog>
+            <script>
+              function openDefaultDialog() {
+                $('#defaultDialog')[0].open()
+              }
+            </script>
           </q-html-code>
         </q-tab>
         <q-tab title="自定义内容">
           <q-html-code>
-            <q-dialog id="custom-dialog">
-              <button slot="button">自定义内容</button>
-              我是内容 我是内容 我是内容 我是内容 我是内容
-              <div slot="footer" style="background-color: skyblue">我是footer,我有自己的颜色</div>
+            <button onclick="openCustomDialog()">自定义嵌套内容</button>
+            <q-dialog id="customDialog">
+              <p>
+                我是内容 我是内容 我是内容 我是内容 我是内容
+              </p>
+              <div slot="footer" style="display: flex;flex-direction: row-reverse;">
+                <button onclick="closeCustomDialog()">
+                  自定义取消按钮
+                </button>
+                <button onclick="openSecondCustomDialog()">打开第二个 dialog</button>
+              </div>
             </q-dialog>
+            <q-dialog id="secondCustomDialog">
+              我是第二个 dialog
+            </q-dialog>
+            <script>
+              function openCustomDialog() {
+                $('#customDialog')[0].open()
+              }
+              function closeCustomDialog() {
+                $('#customDialog')[0].close()
+              }
+              function openSecondCustomDialog() {
+                $('#secondCustomDialog')[0].open()
+              }
+            </script>
           </q-html-code>
         </q-tab>
+        <q-tab title="关闭后销毁">
+          <q-html-code>
+            <button onclick="openDestroyDialog()">打开</button>
+            <q-dialog id="destroyDialog" destroy-after-close>
+              <p>
+                <textarea></textarea>
+              </p>
+            </q-dialog>
+
+            <script>
+              function openDestroyDialog() {
+                $('#destroyDialog')[0].open()
+              } 
+            </script>
+          </q-html-code>
+        </q-tab>
+
       </q-tabs>
     </q-doc-view>
     <q-doc-view title="q-media-player">

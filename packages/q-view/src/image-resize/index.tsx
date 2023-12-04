@@ -137,24 +137,11 @@ export default class ImageResize extends QuarkElement {
     const deltaX = e.clientX - this.startX;
     const deltaY = e.clientY - this.startY;
     // 同比例放大
-    // const distance = computeDistancePoint(this.startX, this.startY, e.clientX, e.clientY);
     const type = this.startEl.getAttribute('data-type');
     let width;
     let height;
-    switch (type) {
-      case 'lt':
-        width = this.curRect.width - deltaX;
-        height = this.curRect.height - deltaY;
 
-        break;
-      case 'rt':
-        width = this.curRect.width + deltaX;
-        height = this.curRect.height - deltaY;
-        break;
-      case 'lb':
-        width = this.curRect.width - deltaX;
-        height = this.curRect.height + deltaY;
-        break;
+    switch (type) {
       case 'rb':
         width = this.curRect.width + deltaX;
         height = this.curRect.height + deltaY;
@@ -235,9 +222,6 @@ export default class ImageResize extends QuarkElement {
           </div>
           {this.isControl && (
             <div class="anchors">
-              <div class="anchor lt" data-type="lt" onMouseDown={this.listen}></div>
-              <div class="anchor lb" data-type="lb" onMouseDown={this.listen}></div>
-              <div class="anchor rt" data-type="rt" onMouseDown={this.listen}></div>
               <div class="anchor rb" data-type="rb" onMouseDown={this.listen}></div>
             </div>
           )}

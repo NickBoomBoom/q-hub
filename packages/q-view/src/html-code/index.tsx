@@ -12,9 +12,10 @@ export default class HtmlCode extends QuarkElement {
   code = '';
 
   contentRef = createRef();
-  componentDidMount(): void {}
-  handleChange = () => {
+  componentDidMount(): void {
     this.code = this.innerHTML;
+  }
+  handleChange = () => {
     Prism.highlightAllUnder(this.shadowRoot);
   };
 
