@@ -85,6 +85,10 @@ export default class CodeArea extends QuarkElement {
       state,
       parent: this.editorEl.current,
     });
+
+    if (!this.readOnly) {
+      this.editor.focus();
+    }
   }
 
   componentDidUpdate(propName, oldValue, newValue) {
