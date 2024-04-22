@@ -72,7 +72,7 @@ export default class Dialog extends QuarkElement {
     window.removeEventListener('keydown', this.handleEsc);
   };
 
-  checkZIndex() {
+  checkZIndex = () => {
     const els = document.querySelectorAll('.q-dialog.open');
     if (els.length) {
       const arr = [];
@@ -86,7 +86,7 @@ export default class Dialog extends QuarkElement {
     } else {
       this.zIndex = DEFAULT_Z_INDEX;
     }
-  }
+  };
 
   emitConfirm = () => {
     this.$emit('confirm');

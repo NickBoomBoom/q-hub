@@ -88,7 +88,7 @@ export default class CodeArea extends QuarkElement {
 
     if (!this.readOnly) {
       setTimeout(() => {
-        this.editor.focus();
+        this.focus();
       });
     }
   }
@@ -135,6 +135,10 @@ export default class CodeArea extends QuarkElement {
     this.$emit('change', {
       detail: this.data,
     });
+  }
+
+  focus() {
+    this.editor.focus();
   }
 
   render() {
