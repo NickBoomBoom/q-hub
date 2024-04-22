@@ -87,7 +87,9 @@ export default class CodeArea extends QuarkElement {
     });
 
     if (!this.readOnly) {
-      this.editor.focus();
+      setTimeout(() => {
+        this.editor.focus();
+      });
     }
   }
 
