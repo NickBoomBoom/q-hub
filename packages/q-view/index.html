@@ -141,7 +141,10 @@
           </q-attr-table>
         </q-tab>
         <q-tab title="事件">
-          <q-attr-table type="event"> change; {value:string,language: string}; 变化 </q-attr-table>
+          <q-attr-table type="event">
+            change; {value:string,language: string}; 变化
+            cursorChange; ; 光标变化
+          </q-attr-table>
         </q-tab>
         <q-tab title="方法">
           <q-attr-table type="method">
@@ -154,7 +157,7 @@
       <q-tabs>
         <q-tab title="编辑模式">
           <q-html-code>
-            <q-code-area value="console.log('可编辑状态')"></q-code-area>
+            <q-code-area value="console.log('可编辑状态')" id="editor"></q-code-area>
           </q-html-code>
         </q-tab>
         <q-tab title="只读模式">
@@ -396,6 +399,7 @@
     $('.app').animate({
       opacity: 1
     }, 500)
+
   </script>
 </body>
 

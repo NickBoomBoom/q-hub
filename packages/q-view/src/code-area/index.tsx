@@ -74,9 +74,12 @@ export default class CodeArea extends QuarkElement {
         this.langConfig.of(_lang),
         this.readOnlyConfig.of(EditorState.readOnly.of(this.readOnly)),
         EditorView.updateListener.of((v) => {
-          const { docChanged } = v;
+          const { docChanged, selectionSet } = v;
           if (docChanged) {
             this.setValue();
+          }
+          if (selectionSet) {
+            this.$emit('cursorChange');
           }
         }),
       ],
