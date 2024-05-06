@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var program = require("commander");
-var { cloneGit } = require("git-clone");
+var { cloneGit } = require("./git-clone.js");
 var PKG = require("./package.json");
 
 program.version(PKG.version);

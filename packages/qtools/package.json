@@ -1,12 +1,12 @@
 {
-  "name": "qtools",
-  "version": "0.0.1",
+  "name": "@nick-qi/qtools",
+  "version": "0.0.2",
   "bin": {
     "qtl": "./cli.js"
   },
   "description": "个人工具箱",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "push": "npm publish --access public"
   },
   "keywords": [
     "full git clone",
