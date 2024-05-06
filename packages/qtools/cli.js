@@ -5,7 +5,7 @@ var PKG = require("./package.json");
 
 program.version(PKG.version);
 
-program.command("git clone").description("Git clone all branches and tags(qtl gca ./url.txt)").action(cloneGit);
+program.command("git clone <path>").description("Git clone all branches and tags(qtl gca ./url.txt)").action(cloneGit);
 
 program.command("help").description("Print this help").action(program.help);
 
