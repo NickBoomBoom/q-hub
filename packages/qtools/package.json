@@ -1,6 +1,6 @@
 {
   "name": "@nick-qi/qtools",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "bin": {
     "qtl": "./cli.js"
   },
@@ -10,8 +10,14 @@
   },
   "keywords": [
     "full git clone",
+    "delete file or directory",
     "tools"
   ],
   "author": "NickBoomBoom",
-  "license": "MIT"
+  "email": "q.chen.self@outlook.com",
+  "license": "MIT",
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "commander": "^12.0.0"
+  }
 }
