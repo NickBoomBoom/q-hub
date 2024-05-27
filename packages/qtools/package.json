@@ -1,6 +1,6 @@
 {
   "name": "@nick-qi/qtools",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "bin": {
     "qtl": "./cli.js"
   },
@@ -16,11 +16,11 @@
   "bugs": {
     "url": "https://github.com/NickBoomBoom/q-hub/issues"
   },
-  "author": {
-    "name": "NickBoomBoom",
-    "url": "https://github.com/NickBoomBoom/q-hub/tree/main/packages/qtools",
-    "email": "q.chen.self@outlook.com"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NickBoomBoom/q-hub/tree/main/packages/qtools"
   },
+  "author": "NickBoomBoom <q.chen.self@outlook.com>",
   "license": "MIT",
   "dependencies": {
     "archiver": "^7.0.1",
