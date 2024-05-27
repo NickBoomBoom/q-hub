@@ -1,6 +1,6 @@
 {
   "name": "@nick-qi/qtools",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "bin": {
     "qtl": "./cli.js"
   },
@@ -13,8 +13,14 @@
     "delete file or directory",
     "tools"
   ],
-  "author": "NickBoomBoom",
-  "email": "q.chen.self@outlook.com",
+  "bugs": {
+    "url": "https://github.com/NickBoomBoom/q-hub/issues"
+  },
+  "author": {
+    "name": "NickBoomBoom",
+    "url": "https://github.com/NickBoomBoom/q-hub/tree/main/packages/qtools",
+    "email": "q.chen.self@outlook.com"
+  },
   "license": "MIT",
   "dependencies": {
     "archiver": "^7.0.1",

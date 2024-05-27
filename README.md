@@ -1,8 +1,9 @@
 # 项目定义
+
 本项目均使用Typescript为基准开发.
 
-
 # 目录结构
+
 ```
 ├── README.md
 ├── package.json        // 全局package.json
@@ -10,7 +11,8 @@
 │   ├── utils94
 │   ├── q-view
 │   └── vue3-history
-├── pnpm-lock.yaml 
+│   └── qtools
+├── pnpm-lock.yaml
 └── pnpm-workspace.yaml // 配置文件
 ```
 
