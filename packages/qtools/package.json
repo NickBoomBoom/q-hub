@@ -1,6 +1,6 @@
 {
   "name": "@nick-qi/qtools",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "bin": {
     "qtl": "./cli.js"
   },
@@ -18,7 +18,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/NickBoomBoom/q-hub/tree/main/packages/qtools"
+    "url": "https://github.com/NickBoomBoom/q-hub.git",
+    "directory": "packages/qtools"
   },
   "author": "NickBoomBoom <q.chen.self@outlook.com>",
   "license": "MIT",
