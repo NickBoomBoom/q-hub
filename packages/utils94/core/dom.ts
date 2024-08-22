@@ -21,7 +21,7 @@ try {
       },
     })
   );
-} catch (err) {}
+} catch (err) { }
 
 export function isPreventDefault(handler: Function): boolean {
   const r: RegExp = /(\/\/|\/\*+)(\s)*(\w)+\.preventDefault\((\w|\s)*?\)/g; // 匹配注释中的 preventDefault
@@ -60,14 +60,21 @@ export function handlerListenOpt<T>(config: T, handler: Function): ListenOptions
  * @param event   监听事件
  * @param handler 监听执行函数
  * @param config  监听配置, 默认 false, 且开启passive(当执行函数内部执行preventDefault时关闭passive). 可传对象参数
- */
-export function on(element: HTMLElement | any, event: Event | string, handler: Function, config: ListenOptions | boolean = false) {
+ * @return function 取消监听函数
+*/
+export function on(element: HTMLElement | any, event: Event | string, handler: Function, config: ListenOptions | boolean = false): () => void {
   // @ts-ignore
   if (document.addEventListener) {
     const params = handlerListenOpt(config, handler);
-    return element.addEventListener(event, handler, params);
+    element.addEventListener(event, handler, params);
+    return () => {
+      element.removeEventListener(event, handler, params);
+    }
   } else {
-    return element.attachEvent('on' + event, handler);
+    element.attachEvent('on' + event, handler);
+    return () => {
+      element.detachEvent('on' + event, handler);
+    }
   }
 }
 /**
@@ -77,13 +84,13 @@ export function on(element: HTMLElement | any, event: Event | string, handler: F
  * @param handler 监听执行函数
  * @param config  监听配置, 默认 false, 且开启passive(当执行函数内部执行preventDefault时关闭passive). 可传对象参数
  */
-export function off(element: HTMLElement | any, event: Event | string, handler: Function, config: ListenOptions | boolean = false) {
+export function off(element: HTMLElement | any, event: Event | string, handler: Function, config: ListenOptions | boolean = false): void {
   // @ts-ignore
   if (document.removeEventListener) {
     const params = handlerListenOpt(config, handler);
-    return element.removeEventListener(event, handler, params);
+    element.removeEventListener(event, handler, params);
   } else {
-    return element.detachEvent('on' + event, handler);
+    element.detachEvent('on' + event, handler);
   }
 }
 /* ---------------- 监听函数 优化 end---------------- */
