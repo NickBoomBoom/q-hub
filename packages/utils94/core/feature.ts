@@ -39,36 +39,7 @@ export function filterUrlSearch(url: string, keys: string[] = []): string {
   return url;
 }
 
-/**
- * 检测时间是否重叠
- * 基本的思路，日期也可以当成字符串进行比较，把开始日期，结束日期分别存进两个数组，并用sort排序，循环遍历数组，从开始时间的第二个元素去比较结束时间的第一个元素，如果小于，就代表时间段有交叉，直接跳出，不然就继续遍历，遍历结束，说明时间没有重复，可以提交。
- * @param arr dateBeginEnd[] 数组对象,ex: [{s:1,e:2}]
- */
-interface dateBeginEnd {
-  s: number;
-  e: number;
-}
-export function checkOverlap(arr: dateBeginEnd[]): boolean {
-  let startArr: number[] = [];
-  let endArr: number[] = [];
-  let bol: boolean = false;
-  arr.forEach((t) => {
-    startArr.push(t.s);
-    endArr.push(t.e);
-  });
 
-  startArr = startArr.sort((a, b) => a - b);
-  endArr = endArr.sort((a, b) => a - b);
-
-  for (let i = 1; i < startArr.length; i++) {
-    if (startArr[i] < endArr[i - 1]) {
-      bol = true;
-      break;
-    }
-  }
-
-  return bol;
-}
 
 /**
  * 图片转化base64
@@ -210,48 +181,102 @@ export function deepClone(data: any, hash = new WeakMap()): any {
 
 /**
  * 通过key找值
- * @param row 数据
+ * @param obj 数据
  * @param key key ; 支持点语法， 支持数组选择
  * @param isDeepClone boolean 是否支持深度克隆；与传入数据的引用 解耦
  * @return value：any 未找到返回undefined
  */
-export function getValueByKey(row: any, key: string, isDeepClone: boolean = false): any {
-  const reg = /\[\d+\]/g; // 获取数组类型key的下标
-  if (!row) {
-    console.warn(`getValueByKey: row is null`);
-    return undefined;
-  } else if (!key) {
-    console.warn('getValueByKey: key is null');
-    return undefined;
+export function getValueByKey(obj: any, key: string, isDeepClone: boolean = false): any {
+  const keys = key.replace(/\[(\d+)\]/g, '.$1').split('.');
+
+  let result = isDeepClone ? deepClone(obj) : obj;
+  for (const k of keys) {
+    if (result !== null && result !== undefined) {
+      result = result[k];
+    } else {
+      return undefined;
+    }
   }
 
-  let res: any = isDeepClone ? deepClone(row) : row;
+  return result;
+}
 
-  try {
-    const keys = key.split('.');
-    keys.forEach((t: string) => {
-      const arrayIndexes: string[] | null = t.match(reg);
-      if (arrayIndexes?.length) {
-        const _key = t.split('[')[0];
-        res = res[_key];
-        arrayIndexes.forEach((tt: string) => {
-          const index = tt.match(/\d+/)![0];
-          res = res[index];
-        });
-      } else {
-        res = res[t];
-      }
-    });
-  } catch (error: Error | any) {
-    console.error(`getValueByKey error: ${error?.message || error} `);
-    res = undefined;
+/**
+ * 设置对象的值,直接修改obj的元数据
+ * @param obj 数据,也支持Vue的Ref对象 [{value: any, prop: string, [propName: string]: any}]
+ * @param source 数据源
+ */
+export function setValue(
+  obj: { value: any; prop: string; [propName: string]: any }[] | { value: any; prop: string; [propName: string]: any },
+  source: any
+) {
+  const targetArray = Array.isArray(obj) ? obj : [obj];
+
+  targetArray.forEach((t) => {
+    const { prop } = t;
+    t.value = getValueByKey(source, prop);
+  });
+}
+
+/**
+ * 重置对象的值
+ *
+ * @param obj 要重置的对象
+ * @returns 重置后的新对象
+ * @description
+ * 此函数会创建一个新对象，其结构与输入对象相同，但值被重置：
+ * - 数组被重置为空数组
+ * - 对象被递归重置
+ * - 字符串被重置为空字符串
+ * - 其他类型被重置为 undefined
+ */
+
+export function resetObject(obj: any): any {
+  const res: any = {};
+  for (const key in obj) {
+    let item = obj[key];
+    if (Array.isArray(item)) {
+      res[key] = [];
+    } else if (typeof item === 'object') {
+      res[key] = resetObject(item);
+    } else if (typeof item === 'string') {
+      res[key] = '';
+    } else {
+      res[key] = undefined;
+    }
   }
   return res;
 }
+
+/**
+ * 顺序执行队列中的任务,执行完成后tasks将被清空
+ *
+ * @param tasks 任务数组，每个元素都是一个返回 Promise 的函数
+ * @returns Promise<void>
+ *
+ * @description
+ * 此函数会按顺序执行传入的任务数组。
+ * 每个任务都会等待前一个任务完成后才开始执行。
+ * 如果任何任务抛出错误，后续任务将不会执行，错误会被抛出。
+ *
+ * @example
+ * const tasks = [
+ *   async () => { await someAsyncOperation() },
+ *   async () => { await anotherAsyncOperation() }
+ * ];
+ * await executeAsyncQueue(tasks);
+ */
+
+export async function executeAsyncQueue(tasks: any[]): Promise<void> {
+  while (tasks.length > 0) {
+    const t = tasks.shift();
+    await t();
+  }
+}
+
 export const feature = {
   getVarType,
   sliceArray,
-  checkOverlap,
   filterUrlSearch,
   getBase64Img,
   imageToBase64,
@@ -261,5 +286,8 @@ export const feature = {
   toString,
   fillZero,
   getValueByKey,
+  setValue,
   deepClone,
+  resetObject,
+  executeAsyncQueue
 };

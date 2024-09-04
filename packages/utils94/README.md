@@ -9,7 +9,7 @@
 | feature    | 功能                  |
 | storage    | 缓存                  |
 | platform   | 平台判断              |
- 
+
 
 ## 快速使用
 
@@ -203,24 +203,30 @@ import { WeChat, dom, bom... } from 'utils94'
     ]
     */
     ```
+    
+- checkOverlap(add:{s:number, e:number}[]):boolean 检测时间是否重叠
+
+    
 
 ## 5. feature
 
-| 函数                                                 | 功能                                       |
-| ---------------------------------------------------- | ------------------------------------------ |
-| getVarType(var:any) : string                         | 获取变量类型                               |
-| sliceArray(arr:any[], limit: number) : any[any[]]    | 等分切割数组                               |
-| filterUrlSearch(url:string, keys: string[]) : string | 过滤url search 中的字符串                  |
-| checkOverlap(arr: {s:number, e: number}[]) : boolean | 检测时间是否重叠                           |
-| getBase64Img(url: string): Promise<string>           | 图片地址转base64                           |
-| imageToBase64(img: HTMLElement): string              | 图片标签转化base64                         |
-| guid():string                                        | guid生成                                   |
-| flatten(arr: any[]): any[]                           | 数组拍平                                   |
-| jsonParse(data: any): any                            | 数据格式化，将被转为string的数据 parse出来 |
-| toString(data: any) : string                         | 将数据stringfy                             |
-| fillZero(num: number \| string) :string              | 前置补0                                    |
-| deepClone(origin: any)                 | 深度克隆                                   |
-| getValueByKey(row:any, key: string)                  | 通过key找值，支持数组下标                  |
+| 函数                                                         | 功能                                         |
+| ------------------------------------------------------------ | -------------------------------------------- |
+| getVarType(var:any) : string                                 | 获取变量类型                                 |
+| sliceArray(arr:any[], limit: number) : any[any[]]            | 等分切割数组                                 |
+| filterUrlSearch(url:string, keys: string[]) : string         | 过滤url search 中的字符串                    |
+| resetObject(*obj*: any): any                                 | 重置对象的值                                 |
+| getBase64Img(url: string): Promise<string>                   | 图片地址转base64                             |
+| imageToBase64(img: HTMLElement): string                      | 图片标签转化base64                           |
+| guid():string                                                | guid生成                                     |
+| flatten(arr: any[]): any[]                                   | 数组拍平                                     |
+| jsonParse(data: any): any                                    | 数据格式化，将被转为string的数据 parse出来   |
+| toString(data: any) : string                                 | 将数据stringfy                               |
+| fillZero(num: number \| string) :string                      | 前置补0                                      |
+| deepClone(origin: any)                                       | 深度克隆                                     |
+| getValueByKey(row:any, key: string)                          | 通过key找值，支持数组下标                    |
+| setValue(obj: {prop:string,value:string}[] \| Ref( {prop:string,value:string}[]), source:any ):void | 设置对象的值,直接修改obj的元数据             |
+| executeAsyncQueue(*tasks*: any[]): Promise<void>             | 顺序执行队列中的任务,执行完成后tasks将被清空 |
 
 ## 6. storage
 
@@ -251,10 +257,3 @@ LocalStorage.clear() // void
     | isMobile():boolean  | 是否为mobile   |
     | isWindows():boolean  | 是否为windows   |
     | isMac():boolean  | 是否为mac   |
-
-
-## 9. Decimal.js
-
-一个解决js计算精度问题的解决方案
-
-[npm地址](https://www.npmjs.com/package/decimal.js)
