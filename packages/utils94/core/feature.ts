@@ -39,8 +39,6 @@ export function filterUrlSearch(url: string, keys: string[] = []): string {
   return url;
 }
 
-
-
 /**
  * 图片转化base64
  * @param img 图片dom
@@ -207,14 +205,17 @@ export function getValueByKey(obj: any, key: string, isDeepClone: boolean = fals
  * @param source 数据源
  */
 export function setValue(
-  obj: { value: any; prop: string; [propName: string]: any }[] | { value: any; prop: string; [propName: string]: any },
+  obj:
+    | { value: any; prop: string; parse: (v: any) => any; [propName: string]: any }[]
+    | { value: any; prop: string; parse: (v: any) => any; [propName: string]: any },
   source: any
 ) {
   const targetArray = Array.isArray(obj) ? obj : [obj];
 
   targetArray.forEach((t) => {
-    const { prop } = t;
-    t.value = getValueByKey(source, prop);
+    const { prop, parse } = t;
+    const value = getValueByKey(source, prop);
+    t.value = parse ? parse(value) : value;
   });
 }
 
@@ -289,5 +290,5 @@ export const feature = {
   setValue,
   deepClone,
   resetObject,
-  executeAsyncQueue
+  executeAsyncQueue,
 };
