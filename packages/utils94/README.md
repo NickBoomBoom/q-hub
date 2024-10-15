@@ -225,7 +225,7 @@ import { WeChat, dom, bom... } from 'utils94'
 | fillZero(num: number \| string) :string                      | 前置补0                                      |
 | deepClone(origin: any)                                       | 深度克隆                                     |
 | getValueByKey(row:any, key: string)                          | 通过key找值，支持数组下标                    |
-| setValue(obj: {prop:string,value:string}[] \| Ref( {prop:string,value:string}[]), source:any ):void | 设置对象的值,直接修改obj的元数据             |
+| setValue(obj: { value: any; prop: string; parse: (*v*: any) => any; [*propName*: string]: any }[] \| { value: any; prop: string; parse: (*v*: any) => any; [*propName*: string]: any }, source:any ):void | 设置对象的值,直接修改obj的元数据             |
 | executeAsyncQueue(*tasks*: any[]): Promise<void>             | 顺序执行队列中的任务,执行完成后tasks将被清空 |
 
 ## 6. storage
